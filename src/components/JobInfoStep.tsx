@@ -57,7 +57,8 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
         sx={{ 
           color: 'text.primary',
           fontWeight: 600,
-          mb: 3
+          mb: { xs: 2, sm: 3 },
+          fontSize: { xs: '1.25rem', sm: '1.5rem' }
         }}
       >
         Informações Profissionais
@@ -66,184 +67,193 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
       <Typography 
         variant="body2" 
         color="text.secondary" 
-        sx={{ mb: 4 }}
+        sx={{ 
+          mb: { xs: 3, sm: 4 },
+          fontSize: { xs: '0.875rem', sm: '0.875rem' }
+        }}
       >
         Informe os dados profissionais e contratuais do funcionário
       </Typography>
 
-      <Stack spacing={3}>
-        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-          <Box sx={{ flex: '1 1 250px' }}>
-            <Controller
-              name="jobInfo.position"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  fullWidth
-                  label="Cargo"
-                  placeholder="Ex: Desenvolvedor Frontend"
-                  error={!!error}
-                  helperText={error?.message}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Work color="action" fontSize="small" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              )}
-            />
-          </Box>
+      <Stack spacing={{ xs: 2, sm: 3 }}>
+        <Box sx={{ 
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+          gap: { xs: 2, sm: 2 }
+        }}>
+          <Controller
+            name="jobInfo.position"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Cargo"
+                placeholder="Ex: Desenvolvedor Frontend"
+                error={!!error}
+                helperText={error?.message}
+                size="medium"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Work color="action" fontSize="small" />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            )}
+          />
 
-          <Box sx={{ flex: '1 1 200px' }}>
-            <Controller
-              name="jobInfo.department"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  fullWidth
-                  select
-                  label="Departamento"
-                  error={!!error}
-                  helperText={error?.message}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Business color="action" fontSize="small" />
-                      </InputAdornment>
-                    ),
-                  }}
-                >
-                  <MenuItem value="">
-                    <em>Selecione</em>
+          <Controller
+            name="jobInfo.department"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                fullWidth
+                select
+                label="Departamento"
+                error={!!error}
+                helperText={error?.message}
+                size="medium"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Business color="action" fontSize="small" />
+                    </InputAdornment>
+                  ),
+                }}
+              >
+                <MenuItem value="">
+                  <em>Selecione</em>
+                </MenuItem>
+                {departments.map((dept) => (
+                  <MenuItem key={dept} value={dept}>
+                    {dept}
                   </MenuItem>
-                  {departments.map((dept) => (
-                    <MenuItem key={dept} value={dept}>
-                      {dept}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-          </Box>
+                ))}
+              </TextField>
+            )}
+          />
         </Box>
 
-        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-          <Box sx={{ flex: '1 1 200px' }}>
-            <Controller
-              name="jobInfo.salary"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  fullWidth
-                  label="Salário"
-                  type="number"
-                  placeholder="5000"
-                  error={!!error}
-                  helperText={error?.message}
-                  onChange={(e) => {
-                    const value = parseFloat(e.target.value) || 0;
-                    field.onChange(value);
-                  }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AttachMoney color="action" fontSize="small" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              )}
-            />
-          </Box>
+        <Box sx={{ 
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+          gap: { xs: 2, sm: 2 }
+        }}>
+          <Controller
+            name="jobInfo.salary"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Salário"
+                type="number"
+                placeholder="5000"
+                error={!!error}
+                helperText={error?.message}
+                size="medium"
+                onChange={(e) => {
+                  const value = parseFloat(e.target.value) || 0;
+                  field.onChange(value);
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AttachMoney color="action" fontSize="small" />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            )}
+          />
 
-          <Box sx={{ flex: '1 1 200px' }}>
-            <Controller
-              name="jobInfo.employmentType"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  fullWidth
-                  select
-                  label="Tipo de Contratação"
-                  error={!!error}
-                  helperText={error?.message}
-                >
-                  <MenuItem value="">
-                    <em>Selecione</em>
+          <Controller
+            name="jobInfo.employmentType"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                fullWidth
+                select
+                label="Tipo de Contratação"
+                error={!!error}
+                helperText={error?.message}
+                size="medium"
+              >
+                <MenuItem value="">
+                  <em>Selecione</em>
+                </MenuItem>
+                {employmentTypes.map((type) => (
+                  <MenuItem key={type} value={type}>
+                    {type}
                   </MenuItem>
-                  {employmentTypes.map((type) => (
-                    <MenuItem key={type} value={type}>
-                      {type}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-          </Box>
+                ))}
+              </TextField>
+            )}
+          />
         </Box>
 
-        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-          <Box sx={{ flex: '1 1 200px' }}>
-            <Controller
-              name="jobInfo.startDate"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  fullWidth
-                  label="Data de Início"
-                  type="date"
-                  error={!!error}
-                  helperText={error?.message}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  inputProps={{
-                    min: new Date().toISOString().split('T')[0]
-                  }}
-                />
-              )}
-            />
-          </Box>
+        <Box sx={{ 
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+          gap: { xs: 2, sm: 2 }
+        }}>
+          <Controller
+            name="jobInfo.startDate"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Data de Início"
+                type="date"
+                error={!!error}
+                helperText={error?.message}
+                size="medium"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  min: new Date().toISOString().split('T')[0]
+                }}
+              />
+            )}
+          />
 
-          <Box sx={{ flex: '1 1 200px' }}>
-            <Controller
-              name="jobInfo.workSchedule"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  fullWidth
-                  select
-                  label="Horário de Trabalho"
-                  error={!!error}
-                  helperText={error?.message}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Schedule color="action" fontSize="small" />
-                      </InputAdornment>
-                    ),
-                  }}
-                >
-                  <MenuItem value="">
-                    <em>Selecione</em>
+          <Controller
+            name="jobInfo.workSchedule"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                fullWidth
+                select
+                label="Horário de Trabalho"
+                error={!!error}
+                helperText={error?.message}
+                size="medium"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Schedule color="action" fontSize="small" />
+                    </InputAdornment>
+                  ),
+                }}
+              >
+                <MenuItem value="">
+                  <em>Selecione</em>
+                </MenuItem>
+                {workSchedules.map((schedule) => (
+                  <MenuItem key={schedule} value={schedule}>
+                    {schedule}
                   </MenuItem>
-                  {workSchedules.map((schedule) => (
-                    <MenuItem key={schedule} value={schedule}>
-                      {schedule}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-          </Box>
+                ))}
+              </TextField>
+            )}
+          />
         </Box>
       </Stack>
     </Box>

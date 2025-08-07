@@ -165,23 +165,60 @@ export const EmployeeRegistrationForm: React.FC = () => {
 
   if (success) {
     return (
-      <Container maxWidth="md">
-        <Paper elevation={3} sx={{ p: 4, mt: 4, textAlign: 'center' }}>
+      <Container 
+        maxWidth="lg" 
+        sx={{ 
+          flex: 1, 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          px: { xs: 1, sm: 2, md: 3 }
+        }}
+      >
+        <Paper 
+          elevation={3} 
+          sx={{ 
+            p: { xs: 3, sm: 4, md: 6 }, 
+            textAlign: 'center',
+            width: '100%',
+            maxWidth: 600,
+            borderRadius: { xs: 2, sm: 3 }
+          }}
+        >
           <CheckCircle 
             color="success" 
-            sx={{ fontSize: 64, mb: 2 }}
+            sx={{ fontSize: { xs: 48, sm: 64 }, mb: 2 }}
           />
-          <Typography variant="h4" gutterBottom color="success.main">
+          <Typography 
+            variant="h4" 
+            gutterBottom 
+            color="success.main"
+            sx={{ 
+              fontSize: { xs: '1.75rem', sm: '2.125rem' },
+              fontWeight: 600
+            }}
+          >
             Funcionário Cadastrado com Sucesso!
           </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+          <Typography 
+            variant="body1" 
+            color="text.secondary" 
+            sx={{ 
+              mb: 3,
+              fontSize: { xs: '0.875rem', sm: '1rem' }
+            }}
+          >
             O funcionário foi salvo no sistema com o ID: <strong>{employeeId}</strong>
           </Typography>
           <Button 
             variant="contained" 
             size="large"
             onClick={handleNewEmployee}
-            sx={{ mt: 2 }}
+            sx={{ 
+              mt: 2,
+              px: { xs: 3, sm: 4 },
+              py: { xs: 1.5, sm: 2 }
+            }}
           >
             Cadastrar Novo Funcionário
           </Button>
@@ -191,36 +228,112 @@ export const EmployeeRegistrationForm: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="md">
-      <Paper elevation={3} sx={{ mt: 4, overflow: 'hidden' }}>
+    <Container 
+      maxWidth="lg" 
+      sx={{ 
+        flex: 1, 
+        display: 'flex', 
+        flexDirection: 'column',
+        px: { xs: 1, sm: 2, md: 3 }
+      }}
+    >
+      <Paper 
+        elevation={3} 
+        sx={{ 
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          borderRadius: { xs: 2, sm: 3 },
+          mx: 'auto',
+          width: '100%',
+          maxWidth: { xs: '100%', sm: 800, md: 900, lg: 1000 }
+        }}
+      >
         {/* Header */}
-        <Box sx={{ p: 4, pb: 2 }}>
-          <Typography variant="h4" component="h1" gutterBottom align="center">
+        <Box sx={{ 
+          p: { xs: 2, sm: 3, md: 4 }, 
+          pb: { xs: 1, sm: 2 },
+          borderBottom: '1px solid',
+          borderColor: 'divider'
+        }}>
+          <Typography 
+            variant="h4" 
+            component="h1" 
+            gutterBottom 
+            align="center"
+            sx={{ 
+              fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
+              fontWeight: 600,
+              mb: 1
+            }}
+          >
             Cadastro de Funcionário
           </Typography>
-          <Typography variant="body2" color="text.secondary" align="center">
+          <Typography 
+            variant="body2" 
+            color="text.secondary" 
+            align="center"
+            sx={{ 
+              fontSize: { xs: '0.75rem', sm: '0.875rem' },
+              maxWidth: 600,
+              mx: 'auto'
+            }}
+          >
             Preencha todas as informações para cadastrar um novo funcionário
           </Typography>
         </Box>
 
         {/* Progress */}
-        <Box sx={{ px: 4, mb: 2 }}>
+        <Box sx={{ px: { xs: 2, sm: 3, md: 4 }, py: 2 }}>
           <LinearProgress 
             variant="determinate" 
             value={progress} 
-            sx={{ height: 8, borderRadius: 4 }}
+            sx={{ 
+              height: { xs: 6, sm: 8 }, 
+              borderRadius: 4,
+              backgroundColor: 'grey.200'
+            }}
           />
-          <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
+          <Typography 
+            variant="body2" 
+            color="text.secondary" 
+            align="center" 
+            sx={{ 
+              mt: 1,
+              fontSize: { xs: '0.75rem', sm: '0.875rem' },
+              fontWeight: 500
+            }}
+          >
             Etapa {currentStep + 1} de {steps.length} ({Math.round(progress)}%)
           </Typography>
         </Box>
         
         {/* Stepper */}
-        <Stepper activeStep={currentStep} sx={{ px: 4, mb: 4 }}>
+        <Stepper 
+          activeStep={currentStep} 
+          sx={{ 
+            px: { xs: 1, sm: 2, md: 4 }, 
+            mb: { xs: 2, sm: 3 },
+            '& .MuiStepLabel-root': {
+              flexDirection: { xs: 'column', sm: 'row' },
+              '& .MuiStepLabel-labelContainer': {
+                display: { xs: 'none', sm: 'block' }
+              }
+            }
+          }}
+        >
           {steps.map((step) => (
             <Step key={step.label}>
               <StepLabel>
-                <Typography variant="body2">
+                <Typography 
+                  variant="body2"
+                  sx={{ 
+                    display: { xs: 'none', sm: 'block' },
+                    fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                    textAlign: 'center'
+                  }}
+                >
                   {step.label}
                 </Typography>
               </StepLabel>
@@ -228,9 +341,25 @@ export const EmployeeRegistrationForm: React.FC = () => {
           ))}
         </Stepper>
 
+        {/* Current Step Label for Mobile */}
+        <Box sx={{ 
+          display: { xs: 'block', sm: 'none' }, 
+          px: 2, 
+          mb: 2,
+          textAlign: 'center'
+        }}>
+          <Typography 
+            variant="body1" 
+            fontWeight={600}
+            color="primary.main"
+          >
+            {steps[currentStep].label}
+          </Typography>
+        </Box>
+
         {/* Error Alert */}
         {error && (
-          <Box sx={{ px: 4, mb: 2 }}>
+          <Box sx={{ px: { xs: 2, sm: 3, md: 4 }, mb: 2 }}>
             <Alert severity="error" onClose={() => setError(null)}>
               {error}
             </Alert>
@@ -238,7 +367,12 @@ export const EmployeeRegistrationForm: React.FC = () => {
         )}
 
         {/* Form Content */}
-        <Box sx={{ p: 4, pt: 0 }}>
+        <Box sx={{ 
+          flex: 1,
+          p: { xs: 2, sm: 3, md: 4 }, 
+          pt: 0,
+          overflowY: 'auto'
+        }}>
           <form onSubmit={handleSubmit(onSubmit)}>
             {renderStepContent()}
             
@@ -246,10 +380,12 @@ export const EmployeeRegistrationForm: React.FC = () => {
             <Box sx={{ 
               display: 'flex', 
               justifyContent: 'space-between', 
-              mt: 4,
-              pt: 3,
+              mt: { xs: 3, sm: 4 },
+              pt: { xs: 2, sm: 3 },
               borderTop: '1px solid',
-              borderColor: 'divider'
+              borderColor: 'divider',
+              flexDirection: { xs: 'column', sm: 'row' },
+              gap: { xs: 2, sm: 0 }
             }}>
               <Button
                 disabled={isFirstStep}
@@ -257,6 +393,11 @@ export const EmployeeRegistrationForm: React.FC = () => {
                 variant="outlined"
                 startIcon={<ArrowBack />}
                 size="large"
+                sx={{ 
+                  order: { xs: 2, sm: 1 },
+                  width: { xs: '100%', sm: 'auto' },
+                  minWidth: { sm: 120 }
+                }}
               >
                 Voltar
               </Button>
@@ -268,6 +409,11 @@ export const EmployeeRegistrationForm: React.FC = () => {
                   disabled={loading}
                   startIcon={loading ? <CircularProgress size={20} /> : <CheckCircle />}
                   size="large"
+                  sx={{ 
+                    order: { xs: 1, sm: 2 },
+                    width: { xs: '100%', sm: 'auto' },
+                    minWidth: { sm: 180 }
+                  }}
                 >
                   {loading ? 'Salvando...' : 'Finalizar Cadastro'}
                 </Button>
@@ -277,6 +423,11 @@ export const EmployeeRegistrationForm: React.FC = () => {
                   variant="contained"
                   endIcon={<ArrowForward />}
                   size="large"
+                  sx={{ 
+                    order: { xs: 1, sm: 2 },
+                    width: { xs: '100%', sm: 'auto' },
+                    minWidth: { sm: 140 }
+                  }}
                 >
                   Próximo
                 </Button>

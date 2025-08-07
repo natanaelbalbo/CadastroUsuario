@@ -10,7 +10,7 @@ const flugoTheme = createTheme({
       contrastText: '#ffffff',
     },
     secondary: {
-      main: '#6b7280', // Cinza
+      main: '#6b7280', 
       light: '#9ca3af',
       dark: '#374151',
     },
@@ -98,11 +98,23 @@ const flugoTheme = createTheme({
           fontWeight: 600,
           borderRadius: 8,
           padding: '10px 24px',
+          '@media (max-width: 600px)': {
+            padding: '8px 16px',
+            fontSize: '0.875rem',
+          },
         },
         containedPrimary: {
           backgroundColor: '#22c55e',
           '&:hover': {
             backgroundColor: '#16a34a',
+          },
+        },
+        sizeLarge: {
+          padding: '12px 32px',
+          fontSize: '1rem',
+          '@media (max-width: 600px)': {
+            padding: '10px 20px',
+            fontSize: '0.875rem',
           },
         },
       },
@@ -113,6 +125,27 @@ const flugoTheme = createTheme({
           '& .MuiOutlinedInput-root': {
             borderRadius: 8,
           },
+          '& .MuiInputLabel-root': {
+            '@media (max-width: 600px)': {
+              fontSize: '0.875rem',
+            },
+          },
+          '& .MuiOutlinedInput-input': {
+            '@media (max-width: 600px)': {
+              padding: '12px 14px',
+              fontSize: '0.875rem',
+            },
+          },
+        },
+      },
+    },
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          marginBottom: '16px',
+          '@media (max-width: 600px)': {
+            marginBottom: '12px',
+          },
         },
       },
     },
@@ -121,6 +154,10 @@ const flugoTheme = createTheme({
         root: {
           borderRadius: 12,
           boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+          '@media (max-width: 600px)': {
+            borderRadius: 8,
+            boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+          },
         },
       },
     },
@@ -129,6 +166,9 @@ const flugoTheme = createTheme({
         root: {
           borderRadius: 12,
           boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+          '@media (max-width: 600px)': {
+            borderRadius: 8,
+          },
         },
       },
     },
@@ -137,6 +177,10 @@ const flugoTheme = createTheme({
         root: {
           borderRadius: 6,
           fontWeight: 500,
+          '@media (max-width: 600px)': {
+            height: 28,
+            fontSize: '0.75rem',
+          },
         },
       },
     },
@@ -144,6 +188,9 @@ const flugoTheme = createTheme({
       styleOverrides: {
         root: {
           padding: '24px 0',
+          '@media (max-width: 600px)': {
+            padding: '16px 0',
+          },
         },
       },
     },
@@ -159,6 +206,46 @@ const flugoTheme = createTheme({
           '&.Mui-completed': {
             color: '#16a34a',
             fontWeight: 500,
+          },
+          '@media (max-width: 600px)': {
+            fontSize: '0.75rem',
+          },
+        },
+      },
+    },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          '@media (max-width: 600px)': {
+            paddingLeft: '8px',
+            paddingRight: '8px',
+          },
+          '@media (max-width: 480px)': {
+            paddingLeft: '4px',
+            paddingRight: '4px',
+          },
+        },
+      },
+    },
+    MuiGrid: {
+      styleOverrides: {
+        root: {
+          '@media (max-width: 600px)': {
+            '& .MuiGrid-item': {
+              paddingLeft: '8px',
+              paddingTop: '8px',
+            },
+          },
+        },
+      },
+    },
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          '@media (max-width: 600px)': {
+            fontSize: '0.875rem',
+            padding: '12px 16px',
           },
         },
       },
