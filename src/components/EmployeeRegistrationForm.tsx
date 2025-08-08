@@ -21,6 +21,7 @@ import { PersonalInfoStep } from './PersonalInfoStep';
 import { AddressInfoStep } from './AddressInfoStep';
 import { JobInfoStep } from './JobInfoStep';
 import { EmployeeService } from '../services/employeeService';
+import { testFirebaseConnection } from '../utils/testFirebase';
 import { 
   personalInfoSchema, 
   addressInfoSchema, 
@@ -132,6 +133,26 @@ export const EmployeeRegistrationForm: React.FC = () => {
   const handlePrevious = () => {
     previousStep();
     setError(null);
+  };
+
+  const handleTestFirebase = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const result = await testFirebaseConnection();
+      if (result.success) {
+        setError(null);
+        alert('✅ Firebase conectado com sucesso! Verifique o console para detalhes.');
+      } else {
+        setError('❌ Erro na conexão Firebase. Verifique o console.');
+      }
+    } catch (err) {
+      setError('❌ Erro ao testar Firebase: ' + (err as Error).message);
+      console.error('Erro no teste Firebase:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onSubmit = async (data: Employee) => {
@@ -282,6 +303,23 @@ export const EmployeeRegistrationForm: React.FC = () => {
           >
             Preencha todas as informações para cadastrar um novo funcionário
           </Typography>
+          
+          {/* Botão de Teste Firebase (Temporário) */}
+          <Box sx={{ textAlign: 'center', mt: 2 }}>
+            <Button 
+              variant="outlined" 
+              size="small"
+              onClick={handleTestFirebase}
+              disabled={loading}
+              sx={{ 
+                fontSize: '0.75rem',
+                px: 2,
+                py: 0.5
+              }}
+            >
+              🔥 Testar Conexão Firebase
+            </Button>
+          </Box>
         </Box>
 
         {/* Progress */}
