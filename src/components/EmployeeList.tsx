@@ -21,6 +21,7 @@ import {
 import { Add, Person } from '@mui/icons-material';
 import type { Employee } from '../types/Employee';
 import { EmployeeService } from '../services/employeeService';
+import flugoLogo from '../assets/icon275.jpg';
 
 interface EmployeeListProps {
   onNewEmployee: () => void;
@@ -96,23 +97,18 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({ onNewEmployee }) => 
         }}
       >
         <Toolbar sx={{ justifyContent: 'space-between', py: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <Box
+              component="img"
+              src={flugoLogo}
+              alt="Flugo Logo"
               sx={{
                 width: 32,
                 height: 32,
-                backgroundColor: '#22c55e',
                 borderRadius: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 'bold',
-                color: 'white',
-                fontSize: '1rem'
+                objectFit: 'contain'
               }}
-            >
-              F
-            </Box>
+            />
             <Typography 
               variant="h6" 
               sx={{ 
