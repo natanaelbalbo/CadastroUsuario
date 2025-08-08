@@ -21,7 +21,6 @@ import { PersonalInfoStep } from './PersonalInfoStep';
 import { AddressInfoStep } from './AddressInfoStep';
 import { JobInfoStep } from './JobInfoStep';
 import { EmployeeService } from '../services/employeeService';
-import { testFirebaseConnection } from '../utils/testFirebase';
 import { 
   personalInfoSchema, 
   addressInfoSchema, 
@@ -71,7 +70,11 @@ const steps = [
   }
 ];
 
-export const EmployeeRegistrationForm: React.FC = () => {
+interface EmployeeRegistrationFormProps {
+  onSuccess?: () => void;
+}
+
+export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> = ({ onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -135,26 +138,6 @@ export const EmployeeRegistrationForm: React.FC = () => {
     setError(null);
   };
 
-  const handleTestFirebase = async () => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const result = await testFirebaseConnection();
-      if (result.success) {
-        setError(null);
-        alert('✅ Firebase conectado com sucesso! Verifique o console para detalhes.');
-      } else {
-        setError('❌ Erro na conexão Firebase. Verifique o console.');
-      }
-    } catch (err) {
-      setError('❌ Erro ao testar Firebase: ' + (err as Error).message);
-      console.error('Erro no teste Firebase:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const onSubmit = async (data: Employee) => {
     setLoading(true);
     setError(null);
@@ -175,8 +158,12 @@ export const EmployeeRegistrationForm: React.FC = () => {
     setSuccess(false);
     setEmployeeId(null);
     setError(null);
-    // Reset form would go here if needed
-    window.location.reload();
+    if (onSuccess) {
+      onSuccess();
+    } else {
+      // Reset form would go here if needed
+      window.location.reload();
+    }
   };
 
   const renderStepContent = () => {
@@ -303,23 +290,6 @@ export const EmployeeRegistrationForm: React.FC = () => {
           >
             Preencha todas as informações para cadastrar um novo funcionário
           </Typography>
-          
-          {/* Botão de Teste Firebase (Temporário) */}
-          <Box sx={{ textAlign: 'center', mt: 2 }}>
-            <Button 
-              variant="outlined" 
-              size="small"
-              onClick={handleTestFirebase}
-              disabled={loading}
-              sx={{ 
-                fontSize: '0.75rem',
-                px: 2,
-                py: 0.5
-              }}
-            >
-              🔥 Testar Conexão Firebase
-            </Button>
-          </Box>
         </Box>
 
         {/* Progress */}
