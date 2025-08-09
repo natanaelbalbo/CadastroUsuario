@@ -1,6 +1,5 @@
 import * as yup from 'yup';
 
-// Schema para informações pessoais
 export const personalInfoSchema = yup.object({
   firstName: yup
     .string()
@@ -47,16 +46,12 @@ export const personalInfoSchema = yup.object({
     .test('cpf-valid', 'CPF inválido', function(value) {
       if (!value) return false;
       
-      // Remove pontos e hífen
       const cpf = value.replace(/[^\d]/g, '');
       
-      // Verifica se tem 11 dígitos
       if (cpf.length !== 11) return false;
       
-      // Verifica se todos os dígitos são iguais
       if (/^(\d)\1{10}$/.test(cpf)) return false;
       
-      // Validação do CPF
       let sum = 0;
       for (let i = 0; i < 9; i++) {
         sum += parseInt(cpf.charAt(i)) * (10 - i);
@@ -77,7 +72,6 @@ export const personalInfoSchema = yup.object({
     })
 });
 
-// Schema para informações de endereço
 export const addressInfoSchema = yup.object({
   street: yup
     .string()
@@ -118,7 +112,6 @@ export const addressInfoSchema = yup.object({
     .matches(/^\d{5}-\d{3}$/, 'CEP deve estar no formato 99999-999')
 });
 
-// Schema para informações de trabalho
 export const jobInfoSchema = yup.object({
   position: yup
     .string()
@@ -160,7 +153,6 @@ export const jobInfoSchema = yup.object({
     .oneOf(['CLT', 'PJ', 'Estagiário', 'Freelancer'], 'Tipo de contratação inválido')
 });
 
-// Schema completo do funcionário
 export const employeeSchema = yup.object({
   personalInfo: personalInfoSchema,
   addressInfo: addressInfoSchema,

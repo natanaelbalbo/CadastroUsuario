@@ -15,9 +15,6 @@ import type { Employee } from '../types/Employee';
 const COLLECTION_NAME = 'employees';
 
 export class EmployeeService {
-  /**
-   * Salva um novo funcionário no Firestore
-   */
   static async saveEmployee(employee: Omit<Employee, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
     try {
       const employeeData = {
@@ -36,9 +33,6 @@ export class EmployeeService {
     }
   }
 
-  /**
-   * Busca todos os funcionários
-   */
   static async getAllEmployees(): Promise<Employee[]> {
     try {
       const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
@@ -62,9 +56,6 @@ export class EmployeeService {
     }
   }
 
-  /**
-   * Atualiza um funcionário existente
-   */
   static async updateEmployee(id: string, updates: Partial<Employee>): Promise<void> {
     try {
       const employeeRef = doc(db, COLLECTION_NAME, id);
@@ -79,9 +70,6 @@ export class EmployeeService {
     }
   }
 
-  /**
-   * Remove um funcionário
-   */
   static async deleteEmployee(id: string): Promise<void> {
     try {
       await deleteDoc(doc(db, COLLECTION_NAME, id));
@@ -92,9 +80,6 @@ export class EmployeeService {
     }
   }
 
-  /**
-   * Atualiza o status de um funcionário (ativo/inativo)
-   */
   static async updateEmployeeStatus(id: string, status: 'active' | 'inactive'): Promise<void> {
     try {
       await this.updateEmployee(id, { status });

@@ -114,7 +114,6 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
     }
   });
 
-  // Atualiza formulário quando muda o funcionário selecionado
   React.useEffect(() => {
     if (employee) {
       reset({
@@ -191,15 +190,12 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
   };
 
   const handleNewEmployee = () => {
-    // Reseta o estado do formulário para um novo cadastro
     setSuccess(false);
     setEmployeeId(null);
     setError(null);
     
-    // Reseta as etapas para a primeira
     resetSteps();
     
-    // Reseta os dados do formulário para valores em branco
     reset({
       personalInfo: {
         firstName: '', lastName: '', email: '', phone: '', birthDate: '', cpf: ''
@@ -319,14 +315,12 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
           maxWidth: { xs: '100%', sm: 800, md: 900, lg: 1000 }
         }}
       >
-        {/* Header */}
         <Box sx={{ 
           p: { xs: 2, sm: 3, md: 4 }, 
           pb: { xs: 1, sm: 2 },
           borderBottom: '1px solid',
           borderColor: 'divider'
         }}>
-          {/* Back to list button */}
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
             <Button 
               variant="text" 
@@ -364,7 +358,6 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
           </Typography>
         </Box>
 
-        {/* Progress */}
         <Box sx={{ px: { xs: 2, sm: 3, md: 4 }, py: 2 }}>
           <LinearProgress 
             variant="determinate" 
@@ -389,7 +382,6 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
           </Typography>
         </Box>
         
-        {/* Stepper */}
         <Stepper 
           activeStep={currentStep} 
           sx={{ 
@@ -421,7 +413,6 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
           ))}
         </Stepper>
 
-        {/* Current Step Label for Mobile */}
         <Box sx={{ 
           display: { xs: 'block', sm: 'none' }, 
           px: 2, 
@@ -437,7 +428,6 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
           </Typography>
         </Box>
 
-        {/* Error Alert */}
         {error && (
           <Box sx={{ px: { xs: 2, sm: 3, md: 4 }, mb: 2 }}>
             <Alert severity="error" onClose={() => setError(null)}>
@@ -446,7 +436,6 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
           </Box>
         )}
 
-        {/* Form Content */}
         <Box sx={{ 
           flex: 1,
           p: { xs: 2, sm: 3, md: 4 }, 
@@ -456,7 +445,6 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
           <Box>
             {renderStepContent()}
             
-            {/* Navigation Buttons */}
             <Box sx={{ 
               display: 'flex', 
               justifyContent: 'space-between', 

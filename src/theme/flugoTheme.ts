@@ -1,10 +1,9 @@
 import { createTheme } from '@mui/material/styles';
 
-// Cores baseadas no design da Flugo
 const flugoTheme = createTheme({
   palette: {
     primary: {
-      main: '#22c55e', // Verde da Flugo
+      main: '#22c55e',
       light: '#4ade80',
       dark: '#16a34a',
       contrastText: '#ffffff',

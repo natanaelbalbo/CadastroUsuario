@@ -17,7 +17,6 @@ interface JobInfoStepProps {
   control: Control<Employee>;
 }
 
-// Opções de departamentos
 const departments = [
   'Tecnologia',
   'Design',
@@ -31,7 +30,6 @@ const departments = [
   'Administrativo'
 ];
 
-// Opções de horário de trabalho
 const workSchedules = [
   '08:00 - 17:00',
   '09:00 - 18:00',
@@ -41,7 +39,6 @@ const workSchedules = [
   'Flexível'
 ];
 
-// Tipos de contratação
 const employmentTypes = [
   'CLT',
   'PJ',
@@ -157,7 +154,7 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
             control={control}
             render={({ field, fieldState: { error, isTouched }, formState }) => {
               const showError = !!error && (isTouched || formState.isSubmitted);
-              // Keep local masked text in sync if form value changes externally
+              
               useEffect(() => {
                 if (typeof field.value === 'number') {
                   if (!field.value) {
@@ -167,6 +164,7 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
                   }
                 }
               }, [field.value]);
+              
               return (
                 <TextField
                   value={salaryInput}
@@ -180,14 +178,12 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
                   inputMode="numeric"
                   onChange={(e) => {
                     const digits = e.target.value.replace(/\D/g, '');
-                    // Treat input as cents; 1 -> 0,01; 12 -> 0,12; 1234 -> 12,34
                     const cents = parseInt(digits || '0', 10);
                     const numeric = cents / 100;
                     setSalaryInput(numeric ? formatCurrency(numeric).replace(/^R\$\s?/, '') : '');
                     field.onChange(numeric);
                   }}
                   onBlur={() => {
-                    // Ensure two decimals formatting on blur
                     const value = typeof field.value === 'number' ? field.value : 0;
                     setSalaryInput(value ? formatCurrency(value).replace(/^R\$\s?/, '') : '');
                   }}

@@ -1,173 +1,186 @@
-# ✅ PROJETO CONCLUÍDO - Flugo App Colaborador
+# Si## Tecnologias Utilizadastema de Cadastro de Funcionários - Flugo
 
-## 🎉 Status: IMPLEMENTADO COM SUCESSO!
+Sistema web para cadastro e gerenciamento de funcionários desenvolvido com React, ## Scripts DisponíveisypeScript e Firebase.
 
-### 📋 Checklist Completo do Desafio
+## � Tecnologias Utilizadas
 
-- ✅ **Formulário multi-step** (3 etapas)
-- ✅ **ReactJS + TypeScript** 
-- ✅ **Material UI** (estilização)
-- ✅ **Firebase Firestore** (persistência)
-- ✅ **Validações completas** (todos os campos required)
-- ✅ **Feedback entre etapas**
-- ✅ **Design responsivo**
-- ✅ **README com instruções**
-- ✅ **Projeto rodando local** (`http://localhost:5174`)
+- **Frontend:** React 18 + TypeScript + Vite
+- **UI Library:** Material UI (MUI) v5  
+- **Formulários:** React Hook Form + Yup
+- **Backend:** Firebase Firestore
+- **Estilização:** Emotion (integrado ao MUI)
 
-### 🚀 Funcionalidades Implementadas
+## Funcionalidades
 
-#### 📝 Formulário Multi-Step
-1. **Etapa 1 - Informações Pessoais**
-   - Nome, sobrenome, email, telefone
-   - Data de nascimento (validação +18 anos)
-   - CPF (validação com algoritmo + formatação)
+- Formulário multi-step para cadastro de funcionários
+- Listagem de funcionários cadastrados
+- Edição e exclusão de funcionários
+- Validação completa de formulários
+- Formatação automática de campos (CPF, telefone, CEP, salário)
+- Persistência de dados no Firebase Firestore
 
-2. **Etapa 2 - Endereço**
-   - Rua, número, complemento, bairro
-   - Cidade, estado, CEP (formatação automática)
-   - Estados brasileiros em dropdown
+## Pré-requisitos
 
-3. **Etapa 3 - Informações Profissionais**
-   - Cargo, departamento, salário
-   - Tipo de contratação (CLT, PJ, Estagiário, Freelancer)
-   - Data de início, horário de trabalho
+Antes de começar, certifique-se de ter instalado:
 
-#### 🎨 Design & UX
-- ✅ **Tema personalizado** com cores da Flugo (#22c55e)
-- ✅ **Interface responsiva** (mobile-first)
-- ✅ **Ícones Material Design**
-- ✅ **Feedback visual** (progresso, erros, sucesso)
-- ✅ **Animações suaves** e transições
+- [Node.js](https://nodejs.org/) (versão 16 ou superior)
+- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+- Uma conta no [Firebase](https://firebase.google.com/)
 
-#### 🔧 Validações & Formatação
-- ✅ **Yup schemas** para validação robusta
-- ✅ **Formatação automática** (CPF, telefone, CEP, moeda)
-- ✅ **Validação de idade** mínima (18 anos)
-- ✅ **Validação de CPF** com algoritmo
-- ✅ **Validação de email** formato correto
-- ✅ **Feedback em tempo real**
+## Instalação e Configuração
 
-#### 🔥 Firebase Integration
-- ✅ **Firestore Database** configurado
-- ✅ **CRUD completo** de funcionários
-- ✅ **Service layer** para operações
-- ✅ **Tratamento de erros**
-- ✅ **Variáveis de ambiente**
-
-### 📁 Estrutura Final do Projeto
-
-```
-flugo-appcolaborador/
-├── .github/
-│   └── copilot-instructions.md     # Instruções para Copilot
-├── .vscode/
-│   └── tasks.json                  # Tasks do VS Code
-├── src/
-│   ├── components/                 # Componentes React
-│   │   ├── EmployeeRegistrationForm.tsx
-│   │   ├── PersonalInfoStep.tsx
-│   │   ├── AddressInfoStep.tsx
-│   │   ├── JobInfoStep.tsx
-│   │   └── EmployeeList.tsx
-│   ├── hooks/
-│   │   └── useMultiStepForm.ts
-│   ├── services/
-│   │   └── employeeService.ts
-│   ├── types/
-│   │   └── Employee.ts
-│   ├── config/
-│   │   └── firebase.ts
-│   ├── utils/
-│   │   ├── formatters.ts
-│   │   └── validationSchemas.ts
-│   ├── theme/
-│   │   └── flugoTheme.ts
-│   ├── App.tsx
-│   └── main.tsx
-├── .env.example                    # Template de variáveis
-├── README.md                       # Documentação principal
-├── DEPLOY.md                       # Guia de deploy
-├── FIREBASE_SETUP.md               # Configuração Firebase
-└── package.json                    # Dependências
-```
-
-### 🌐 URLs e Acesso
-
-- **Local Development:** `http://localhost:5174`
-- **Repositório:** Pronto para GitHub
-- **Deploy:** Configurado para Vercel/Netlify/Firebase
-
-### 📚 Documentação Completa
-
-1. **README.md** - Instruções principais
-2. **FIREBASE_SETUP.md** - Passo a passo Firebase
-3. **DEPLOY.md** - Guias de deploy
-4. **Código comentado** - TypeScript + JSDoc
-
-### 🛠️ Tecnologias Utilizadas
-
-```json
-{
-  "frontend": "React 18 + TypeScript",
-  "styling": "Material UI v5 + Emotion",
-  "forms": "React Hook Form + Yup",
-  "backend": "Firebase Firestore",
-  "build": "Vite",
-  "linting": "ESLint + TypeScript",
-  "deployment": "Vercel/Netlify/Firebase"
-}
-```
-
-### 🚀 Como Executar
+### 1. Clone o repositório
 
 ```bash
-# 1. Instalar dependências
-npm install
-
-# 2. Configurar Firebase (.env)
-cp .env.example .env
-# Editar .env com suas configurações
-
-# 3. Executar desenvolvimento
-npm run dev
-
-# 4. Acessar aplicação
-http://localhost:5174
+git clone https://github.com/natanaelbalbo/CadastroUsuario.git
+cd CadastroUsuario
 ```
 
-### 🔥 Firebase - Configuração Necessária
+### 2. Instale as dependências
 
-**IMPORTANTE:** Para usar o sistema:
+```bash
+npm install
+```
 
-1. **Criar projeto Firebase**
-2. **Ativar Firestore Database**
-3. **Configurar variáveis no `.env`**
-4. **Testar cadastro de funcionário**
+### 3. Configure o Firebase
 
-📄 **Ver detalhes:** `FIREBASE_SETUP.md`
+#### 3.1. Crie um projeto no Firebase
+1. Acesse o [Console do Firebase](https://console.firebase.google.com/)
+2. Clique em "Criar projeto"
+3. Siga os passos para criar seu projeto
 
-### 🌟 Próximos Passos (Pós-Entrega)
+#### 3.2. Configure o Firestore Database
+1. No console do Firebase, vá em "Firestore Database"
+2. Clique em "Criar banco de dados"
+3. Escolha "Começar no modo teste" (para desenvolvimento)
+4. Selecione uma localização
 
-1. **Deploy em produção**
-2. **Implementar autenticação**
-3. **Adicionar tela de listagem**
-4. **Funcionalidade de edição**
-5. **Relatórios e dashboards**
+#### 3.3. Obtenha as configurações do projeto
+1. Vá em "Configurações do projeto" (ícone de engrenagem)
+2. Na aba "Geral", role até "Seus aplicativos"
+3. Clique em "Adicionar app" e escolha "Web"
+4. Registre o app e copie as configurações
 
----
+#### 3.4. Configure as variáveis de ambiente
+1. Copie o arquivo de exemplo:
+```bash
+cp .env.example .env
+```
 
-## 🎯 DESAFIO CONCLUÍDO COM SUCESSO!
+2. Edite o arquivo `.env` com suas configurações do Firebase:
+```env
+VITE_FIREBASE_API_KEY=sua_api_key_aqui
+VITE_FIREBASE_AUTH_DOMAIN=seu_projeto.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=seu_projeto_id
+VITE_FIREBASE_STORAGE_BUCKET=seu_projeto.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=123456789
+VITE_FIREBASE_APP_ID=sua_app_id_aqui
+```
 
-**✅ Todos os requisitos atendidos**  
-**✅ Código limpo e documentado**  
-**✅ Design responsivo e moderno**  
-**✅ Funcionalidades completas**  
-**✅ Pronto para produção**
+### 4. Execute o projeto
 
-### 📞 Próximos Passos
-1. Configure o Firebase (5 minutos)
-2. Teste a aplicação localmente
-3. Faça o deploy em produção
-4. Compartilhe o link com a equipe Flugo
+```bash
+npm run dev
+```
 
-**🚀 App pronto para impressionar na entrevista!** 🎉
+O projeto estará disponível em: `http://localhost:5173`
+
+## Estrutura do Projeto
+
+```
+src/
+├── components/          # Componentes React
+│   ├── EmployeeRegistrationForm.tsx
+│   ├── PersonalInfoStep.tsx
+│   ├── AddressInfoStep.tsx
+│   ├── JobInfoStep.tsx
+│   └── EmployeeList.tsx
+├── hooks/              # Custom hooks
+│   └── useMultiStepForm.ts
+├── services/           # Serviços (Firebase, APIs)
+│   └── employeeService.ts
+├── types/              # Interfaces TypeScript
+│   └── Employee.ts
+├── config/             # Configurações
+│   └── firebase.ts
+├── utils/              # Funções utilitárias
+│   ├── formatters.ts
+│   └── validationSchemas.ts
+├── theme/              # Tema Material UI
+│   └── flugoTheme.ts
+├── App.tsx
+└── main.tsx
+```
+
+## Como Usar
+
+### Cadastrar um novo funcionário
+1. Na tela inicial, clique em "Novo Colaborador"
+2. Preencha as informações pessoais (Etapa 1)
+3. Preencha o endereço (Etapa 2)
+4. Preencha as informações profissionais (Etapa 3)
+5. Clique em "Finalizar Cadastro"
+
+### Gerenciar funcionários
+- **Editar:** Clique no ícone de lápis na listagem
+- **Excluir:** Clique no ícone de lixeira e confirme a ação
+- **Voltar ao menu:** Use o botão "Voltar ao menu" a qualquer momento
+
+## Build para Produção
+
+```bash
+npm run build
+```
+
+Os arquivos de produção serão gerados na pasta `dist/`.
+
+## Deploy
+
+### Vercel (Recomendado)
+1. Instale a CLI da Vercel: `npm i -g vercel`
+2. Execute: `vercel`
+3. Siga as instruções
+4. Configure as variáveis de ambiente no painel da Vercel
+
+### Outras opções
+- **Netlify:** Arraste a pasta `dist` no painel do Netlify
+- **Firebase Hosting:** `npm run build && firebase deploy`
+
+## � Scripts Disponíveis
+
+- `npm run dev` - Executa em modo de desenvolvimento
+- `npm run build` - Gera build de produção
+- `npm run preview` - Preview do build de produção
+- `npm run lint` - Executa o linter
+
+## Personalização
+
+### Cores do tema
+As cores principais estão definidas em `src/theme/flugoTheme.ts`:
+
+```typescript
+const flugoTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#22c55e', // Verde da Flugo
+    },
+    // ...
+  }
+});
+```
+
+### Validações
+As regras de validação estão em `src/utils/validationSchemas.ts` e podem ser personalizadas conforme necessário.
+
+## Solução de Problemas
+
+### Erro de conexão com Firebase
+- Verifique se as variáveis de ambiente estão corretas
+- Confirme se o Firestore está ativado no projeto
+- Verifique se as regras de segurança permitem leitura/escrita
+
+### Erro de build
+- Execute `npm install` novamente
+- Verifique se todas as variáveis de ambiente estão definidas
+- Confirme se está usando Node.js 16+
+

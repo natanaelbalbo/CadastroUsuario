@@ -64,8 +64,6 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({ onNewEmployee, onEdi
   };
 
   const getStatusChip = () => {
-    // Por enquanto, vamos considerar todos como "Ativo" 
-    // Pode ser expandido com lógica de status baseada em data de início
     const isActive = true;
     return (
       <Chip
@@ -101,7 +99,6 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({ onNewEmployee, onEdi
 
   return (
     <Box sx={{ backgroundColor: '#f9fafb', minHeight: '100vh' }}>
-      {/* Header da Flugo */}
       <AppBar 
         position="static" 
         elevation={0}
@@ -150,9 +147,7 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({ onNewEmployee, onEdi
         </Toolbar>
       </AppBar>
 
-      {/* Sidebar + Content */}
       <Box sx={{ display: 'flex' }}>
-        {/* Sidebar */}
         <Box 
           sx={{ 
             width: 250,
@@ -180,9 +175,7 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({ onNewEmployee, onEdi
           </Box>
         </Box>
 
-        {/* Main Content */}
         <Box sx={{ flex: 1, p: 4 }}>
-          {/* Header do Content */}
           <Box 
             sx={{ 
               display: 'flex', 
@@ -221,14 +214,12 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({ onNewEmployee, onEdi
             </Button>
           </Box>
 
-          {/* Error Alert */}
           {error && (
             <Alert severity="error" sx={{ mb: 3 }}>
               {error}
             </Alert>
           )}
 
-          {/* Table Container */}
           <Paper 
             elevation={0}
             sx={{ 
