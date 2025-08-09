@@ -1,6 +1,5 @@
-# Si## Tecnologias Utilizadastema de Cadastro de Funcionários - Flugo
-
-Sistema web para cadastro e gerenciamento de funcionários desenvolvido com React, ## Scripts DisponíveisypeScript e Firebase.
+# Sistema de Cadastro de Funcionários 
+Sistema web para cadastro e gerenciamento de funcionários desenvolvido com React, TypeScript e Firebase
 
 ## � Tecnologias Utilizadas
 
@@ -133,18 +132,6 @@ npm run build
 ```
 
 Os arquivos de produção serão gerados na pasta `dist/`.
-
-## Deploy
-
-### Vercel (Recomendado)
-1. Instale a CLI da Vercel: `npm i -g vercel`
-2. Execute: `vercel`
-3. Siga as instruções
-4. Configure as variáveis de ambiente no painel da Vercel
-
-### Outras opções
-- **Netlify:** Arraste a pasta `dist` no painel do Netlify
-- **Firebase Hosting:** `npm run build && firebase deploy`
 
 ## � Scripts Disponíveis
 
