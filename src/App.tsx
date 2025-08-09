@@ -43,7 +43,7 @@ function App() {
           <EmployeeList onNewEmployee={handleNewEmployee} onEdit={handleEditEmployee} />
         ) : (
           <Box sx={{ py: { xs: 1, sm: 2, md: 3 } }}>
-            <EmployeeRegistrationForm employee={selectedEmployee} onSuccess={handleBackToList} onCancel={handleBackToList} />
+            <EmployeeRegistrationForm employee={selectedEmployee} onCancel={handleBackToList} />
           </Box>
         )}
       </Box>

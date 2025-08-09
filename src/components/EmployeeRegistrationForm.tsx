@@ -76,7 +76,7 @@ interface EmployeeRegistrationFormProps {
   onCancel?: () => void;
 }
 
-export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> = ({ employee, onSuccess, onCancel }) => {
+export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> = ({ employee, onCancel }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -147,7 +147,8 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
     previousStep, 
     isFirstStep, 
     isLastStep, 
-    progress 
+    progress,
+    reset: resetSteps
   } = useMultiStepForm({ totalSteps: steps.length });
 
   const handleNext = async () => {
@@ -190,15 +191,26 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
   };
 
   const handleNewEmployee = () => {
+    // Reseta o estado do formulário para um novo cadastro
     setSuccess(false);
     setEmployeeId(null);
     setError(null);
-    if (onSuccess) {
-      onSuccess();
-    } else {
-      // Reset form would go here if needed
-      window.location.reload();
-    }
+    
+    // Reseta as etapas para a primeira
+    resetSteps();
+    
+    // Reseta os dados do formulário para valores em branco
+    reset({
+      personalInfo: {
+        firstName: '', lastName: '', email: '', phone: '', birthDate: '', cpf: ''
+      },
+      addressInfo: {
+        street: '', number: '', complement: '', neighborhood: '', city: '', state: '', zipCode: ''
+      },
+      jobInfo: {
+        position: '', department: '', salary: 0, startDate: '', workSchedule: '', employmentType: ''
+      }
+    } as any);
   };
 
   const renderStepContent = () => {
