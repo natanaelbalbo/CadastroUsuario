@@ -1,5 +1,5 @@
 # Sistema de Cadastro de Funcionários 
-Sistema web para cadastro e gerenciamento de funcionários desenvolvido com React, TypeScript e Firebase## Scripts Disponíveis
+Sistema web para cadastro e gerenciamento de funcionários desenvolvido com React, TypeScript e Firebase
 
 ## � Tecnologias Utilizadas
 
