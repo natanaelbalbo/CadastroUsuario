@@ -1,6 +1,6 @@
 # Sistema de Cadastro de Funcionários - Flugo
 
-Sistema web para cadastro e gerenciamento de funcionários desenvolvido com React, TypeScript e Firebase.
+Sistema web para cadastro e gerenciamento de funcionários desenvolvido com React, TypeScript e Firebase## Scripts Disponíveis
 
 ## Tecnologias Utilizadas# Tecnologias Utilizadastema de Cadastro de Funcionários - Flugo
 
