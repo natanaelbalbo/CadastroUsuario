@@ -133,18 +133,6 @@ npm run build
 
 Os arquivos de produção serão gerados na pasta `dist/`.
 
-## Deploy
-
-### Vercel (Recomendado)
-1. Instale a CLI da Vercel: `npm i -g vercel`
-2. Execute: `vercel`
-3. Siga as instruções
-4. Configure as variáveis de ambiente no painel da Vercel
-
-### Outras opções
-- **Netlify:** Arraste a pasta `dist` no painel do Netlify
-- **Firebase Hosting:** `npm run build && firebase deploy`
-
 ## � Scripts Disponíveis
 
 - `npm run dev` - Executa em modo de desenvolvimento
