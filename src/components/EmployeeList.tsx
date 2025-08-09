@@ -18,16 +18,17 @@ import {
   Toolbar,
   IconButton,
 } from '@mui/material';
-import { Add, Person } from '@mui/icons-material';
+import { Add, Person, Edit, Delete } from '@mui/icons-material';
 import type { Employee } from '../types/Employee';
 import { EmployeeService } from '../services/employeeService';
 import flugoLogo from '../assets/icon275.jpg';
 
 interface EmployeeListProps {
   onNewEmployee: () => void;
+  onEdit?: (employee: Employee) => void;
 }
 
-export const EmployeeList: React.FC<EmployeeListProps> = ({ onNewEmployee }) => {
+export const EmployeeList: React.FC<EmployeeListProps> = ({ onNewEmployee, onEdit }) => {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -46,6 +47,19 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({ onNewEmployee }) => 
       console.error('Erro:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (employee: Employee) => {
+    if (!employee.id) return;
+    const confirmed = window.confirm(`Excluir o colaborador ${employee.personalInfo.firstName} ${employee.personalInfo.lastName}?`);
+    if (!confirmed) return;
+    try {
+      await EmployeeService.deleteEmployee(employee.id);
+      setEmployees(prev => prev.filter(e => e.id !== employee.id));
+    } catch (err) {
+      setError('Erro ao excluir colaborador');
+      console.error('Erro ao excluir:', err);
     }
   };
 
@@ -281,6 +295,17 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({ onNewEmployee }) => 
                       >
                         Status ↓
                       </TableCell>
+                      <TableCell 
+                        align="right"
+                        sx={{ 
+                          fontWeight: 600,
+                          color: '#6b7280',
+                          borderBottom: '1px solid #e5e7eb',
+                          py: 2
+                        }}
+                      >
+                        Ações
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -339,6 +364,24 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({ onNewEmployee }) => 
                         </TableCell>
                         <TableCell sx={{ py: 3 }}>
                           {getStatusChip()}
+                        </TableCell>
+                        <TableCell align="right" sx={{ py: 3 }}>
+                          <IconButton 
+                            size="small" 
+                            onClick={() => onEdit && onEdit(employee)}
+                            title="Editar"
+                            sx={{ mr: 1 }}
+                          >
+                            <Edit fontSize="small" />
+                          </IconButton>
+                          <IconButton 
+                            size="small" 
+                            onClick={() => handleDelete(employee)}
+                            title="Excluir"
+                            color="error"
+                          >
+                            <Delete fontSize="small" />
+                          </IconButton>
                         </TableCell>
                       </TableRow>
                     ))}

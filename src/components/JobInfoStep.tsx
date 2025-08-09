@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   TextField,
   Typography,
@@ -11,6 +11,7 @@ import { Controller } from 'react-hook-form';
 import type { Control } from 'react-hook-form';
 import { Work, Business, AttachMoney, Schedule } from '@mui/icons-material';
 import type { Employee } from '../types/Employee';
+import { formatCurrency } from '../utils/formatters';
 
 interface JobInfoStepProps {
   control: Control<Employee>;
@@ -49,6 +50,7 @@ const employmentTypes = [
 ];
 
 export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
+  const [salaryInput, setSalaryInput] = useState<string>('');
   return (
     <Box>
       <Typography 
@@ -155,20 +157,39 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
             control={control}
             render={({ field, fieldState: { error, isTouched }, formState }) => {
               const showError = !!error && (isTouched || formState.isSubmitted);
+              // Keep local masked text in sync if form value changes externally
+              useEffect(() => {
+                if (typeof field.value === 'number') {
+                  if (!field.value) {
+                    setSalaryInput('');
+                  } else {
+                    setSalaryInput(formatCurrency(field.value).replace(/^R\$\s?/, ''));
+                  }
+                }
+              }, [field.value]);
               return (
                 <TextField
-                  {...field}
+                  value={salaryInput}
                   fullWidth
                   label="Salário"
-                  type="number"
-                  placeholder="5000"
+                  placeholder="5.000,00"
                   required
                   error={showError}
                   helperText={showError ? error?.message : ''}
                   size="medium"
+                  inputMode="numeric"
                   onChange={(e) => {
-                    const value = parseFloat(e.target.value) || 0;
-                    field.onChange(value);
+                    const digits = e.target.value.replace(/\D/g, '');
+                    // Treat input as cents; 1 -> 0,01; 12 -> 0,12; 1234 -> 12,34
+                    const cents = parseInt(digits || '0', 10);
+                    const numeric = cents / 100;
+                    setSalaryInput(numeric ? formatCurrency(numeric).replace(/^R\$\s?/, '') : '');
+                    field.onChange(numeric);
+                  }}
+                  onBlur={() => {
+                    // Ensure two decimals formatting on blur
+                    const value = typeof field.value === 'number' ? field.value : 0;
+                    setSalaryInput(value ? formatCurrency(value).replace(/^R\$\s?/, '') : '');
                   }}
                   InputProps={{
                     startAdornment: (
@@ -176,6 +197,7 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
                         <AttachMoney color="action" fontSize="small" />
                       </InputAdornment>
                     ),
+                    inputComponent: undefined
                   }}
                 />
               );

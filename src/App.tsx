@@ -4,18 +4,27 @@ import { CssBaseline, Box } from '@mui/material';
 import flugoTheme from './theme/flugoTheme';
 import { EmployeeRegistrationForm } from './components/EmployeeRegistrationForm';
 import { EmployeeList } from './components/EmployeeList';
+import type { Employee } from './types/Employee';
 
 type AppView = 'list' | 'form';
 
 function App() {
   const [currentView, setCurrentView] = useState<AppView>('list');
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
 
   const handleNewEmployee = () => {
     setCurrentView('form');
+    setSelectedEmployee(null);
   };
 
   const handleBackToList = () => {
     setCurrentView('list');
+    setSelectedEmployee(null);
+  };
+
+  const handleEditEmployee = (employee: Employee) => {
+    setSelectedEmployee(employee);
+    setCurrentView('form');
   };
 
   return (
@@ -31,10 +40,10 @@ function App() {
         }}
       >
         {currentView === 'list' ? (
-          <EmployeeList onNewEmployee={handleNewEmployee} />
+          <EmployeeList onNewEmployee={handleNewEmployee} onEdit={handleEditEmployee} />
         ) : (
           <Box sx={{ py: { xs: 1, sm: 2, md: 3 } }}>
-            <EmployeeRegistrationForm onSuccess={handleBackToList} />
+            <EmployeeRegistrationForm employee={selectedEmployee} onSuccess={handleBackToList} onCancel={handleBackToList} />
           </Box>
         )}
       </Box>

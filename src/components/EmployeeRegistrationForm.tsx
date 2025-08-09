@@ -71,20 +71,22 @@ const steps = [
 ];
 
 interface EmployeeRegistrationFormProps {
+  employee?: Employee | null;
   onSuccess?: () => void;
+  onCancel?: () => void;
 }
 
-export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> = ({ onSuccess }) => {
+export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> = ({ employee, onSuccess, onCancel }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [employeeId, setEmployeeId] = useState<string | null>(null);
 
-  const { control, handleSubmit, trigger } = useForm<Employee>({
+  const { control, handleSubmit, trigger, reset } = useForm<Employee>({
     resolver: yupResolver(employeeSchema),
     mode: 'onBlur',
     defaultValues: {
-      personalInfo: {
+      personalInfo: employee?.personalInfo ?? {
         firstName: '',
         lastName: '',
         email: '',
@@ -92,7 +94,7 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
         birthDate: '',
         cpf: ''
       },
-      addressInfo: {
+      addressInfo: employee?.addressInfo ?? {
         street: '',
         number: '',
         complement: '',
@@ -101,7 +103,7 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
         state: '',
         zipCode: ''
       },
-      jobInfo: {
+      jobInfo: employee?.jobInfo ?? {
         position: '',
         department: '',
         salary: 0,
@@ -111,6 +113,33 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
       }
     }
   });
+
+  // Atualiza formulário quando muda o funcionário selecionado
+  React.useEffect(() => {
+    if (employee) {
+      reset({
+        personalInfo: employee.personalInfo,
+        addressInfo: employee.addressInfo,
+        jobInfo: employee.jobInfo,
+        id: employee.id,
+        status: employee.status,
+        createdAt: employee.createdAt,
+        updatedAt: employee.updatedAt
+      } as any);
+    } else {
+      reset({
+        personalInfo: {
+          firstName: '', lastName: '', email: '', phone: '', birthDate: '', cpf: ''
+        },
+        addressInfo: {
+          street: '', number: '', complement: '', neighborhood: '', city: '', state: '', zipCode: ''
+        },
+        jobInfo: {
+          position: '', department: '', salary: 0, startDate: '', workSchedule: '', employmentType: ''
+        }
+      } as any);
+    }
+  }, [employee, reset]);
 
   const { 
     currentStep, 
@@ -143,9 +172,15 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
     setError(null);
     
     try {
-      const id = await EmployeeService.saveEmployee(data);
-      setEmployeeId(id);
-      setSuccess(true);
+      if (employee?.id) {
+        await EmployeeService.updateEmployee(employee.id, data);
+        setEmployeeId(employee.id);
+        setSuccess(true);
+      } else {
+        const id = await EmployeeService.saveEmployee(data);
+        setEmployeeId(id);
+        setSuccess(true);
+      }
     } catch (err) {
       setError('Erro ao salvar funcionário. Tente novamente.');
       console.error('Erro ao salvar:', err);
@@ -230,6 +265,20 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
           >
             Cadastrar Novo Funcionário
           </Button>
+          {onCancel && (
+            <Button 
+              variant="text" 
+              size="large"
+              onClick={onCancel}
+              sx={{ 
+                mt: 1,
+                ml: 2,
+                textTransform: 'none'
+              }}
+            >
+              Voltar ao menu
+            </Button>
+          )}
         </Paper>
       </Container>
     );
@@ -265,6 +314,17 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
           borderBottom: '1px solid',
           borderColor: 'divider'
         }}>
+          {/* Back to list button */}
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+            <Button 
+              variant="text" 
+              startIcon={<ArrowBack />} 
+              onClick={onCancel}
+              sx={{ textTransform: 'none', color: 'text.secondary' }}
+            >
+              Voltar ao menu
+            </Button>
+          </Box>
           <Typography 
             variant="h4" 
             component="h1" 
@@ -276,7 +336,7 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
               mb: 1
             }}
           >
-            Cadastro de Funcionário
+            {employee?.id ? 'Editar Funcionário' : 'Cadastro de Funcionário'}
           </Typography>
           <Typography 
             variant="body2" 
@@ -313,7 +373,7 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
               fontWeight: 500
             }}
           >
-            Etapa {currentStep + 1} de {steps.length} ({Math.round(progress)}%)
+            {employee?.id ? 'Editando cadastro' : `Etapa ${currentStep + 1} de ${steps.length} (${Math.round(progress)}%)`}
           </Typography>
         </Box>
         
@@ -381,7 +441,7 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
           pt: 0,
           overflowY: 'auto'
         }}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <Box>
             {renderStepContent()}
             
             {/* Navigation Buttons */}
@@ -412,7 +472,7 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
               
               {isLastStep ? (
                 <Button
-                  type="submit"
+                  onClick={handleSubmit(onSubmit)}
                   variant="contained"
                   disabled={loading}
                   startIcon={loading ? <CircularProgress size={20} /> : <CheckCircle />}
@@ -423,7 +483,7 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
                     minWidth: { sm: 180 }
                   }}
                 >
-                  {loading ? 'Salvando...' : 'Finalizar Cadastro'}
+                  {loading ? 'Salvando...' : (employee?.id ? 'Salvar Alterações' : 'Finalizar Cadastro')}
                 </Button>
               ) : (
                 <Button
@@ -441,7 +501,7 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
                 </Button>
               )}
             </Box>
-          </form>
+          </Box>
         </Box>
       </Paper>
     </Container>
