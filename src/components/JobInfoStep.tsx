@@ -84,56 +84,64 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
           <Controller
             name="jobInfo.position"
             control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                fullWidth
-                label="Cargo"
-                placeholder="Ex: Desenvolvedor Frontend"
-                error={!!error}
-                helperText={error?.message}
-                size="medium"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Work color="action" fontSize="small" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            )}
+            render={({ field, fieldState: { error, isTouched }, formState }) => {
+              const showError = !!error && (isTouched || formState.isSubmitted);
+              return (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label="Cargo"
+                  placeholder="Ex: Desenvolvedor Frontend"
+                  required
+                  error={showError}
+                  helperText={showError ? error?.message : ''}
+                  size="medium"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Work color="action" fontSize="small" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              );
+            }}
           />
 
           <Controller
             name="jobInfo.department"
             control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                fullWidth
-                select
-                label="Departamento"
-                error={!!error}
-                helperText={error?.message}
-                size="medium"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Business color="action" fontSize="small" />
-                    </InputAdornment>
-                  ),
-                }}
-              >
-                <MenuItem value="">
-                  <em>Selecione</em>
-                </MenuItem>
-                {departments.map((dept) => (
-                  <MenuItem key={dept} value={dept}>
-                    {dept}
+            render={({ field, fieldState: { error, isTouched }, formState }) => {
+              const showError = !!error && (isTouched || formState.isSubmitted);
+              return (
+                <TextField
+                  {...field}
+                  fullWidth
+                  select
+                  label="Departamento"
+                  required
+                  error={showError}
+                  helperText={showError ? error?.message : ''}
+                  size="medium"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Business color="action" fontSize="small" />
+                      </InputAdornment>
+                    ),
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>Selecione</em>
                   </MenuItem>
-                ))}
-              </TextField>
-            )}
+                  {departments.map((dept) => (
+                    <MenuItem key={dept} value={dept}>
+                      {dept}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              );
+            }}
           />
         </Box>
 
@@ -145,54 +153,62 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
           <Controller
             name="jobInfo.salary"
             control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                fullWidth
-                label="Salário"
-                type="number"
-                placeholder="5000"
-                error={!!error}
-                helperText={error?.message}
-                size="medium"
-                onChange={(e) => {
-                  const value = parseFloat(e.target.value) || 0;
-                  field.onChange(value);
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AttachMoney color="action" fontSize="small" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            )}
+            render={({ field, fieldState: { error, isTouched }, formState }) => {
+              const showError = !!error && (isTouched || formState.isSubmitted);
+              return (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label="Salário"
+                  type="number"
+                  placeholder="5000"
+                  required
+                  error={showError}
+                  helperText={showError ? error?.message : ''}
+                  size="medium"
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value) || 0;
+                    field.onChange(value);
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AttachMoney color="action" fontSize="small" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              );
+            }}
           />
 
           <Controller
             name="jobInfo.employmentType"
             control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                fullWidth
-                select
-                label="Tipo de Contratação"
-                error={!!error}
-                helperText={error?.message}
-                size="medium"
-              >
-                <MenuItem value="">
-                  <em>Selecione</em>
-                </MenuItem>
-                {employmentTypes.map((type) => (
-                  <MenuItem key={type} value={type}>
-                    {type}
+            render={({ field, fieldState: { error, isTouched }, formState }) => {
+              const showError = !!error && (isTouched || formState.isSubmitted);
+              return (
+                <TextField
+                  {...field}
+                  fullWidth
+                  select
+                  label="Tipo de Contratação"
+                  required
+                  error={showError}
+                  helperText={showError ? error?.message : ''}
+                  size="medium"
+                >
+                  <MenuItem value="">
+                    <em>Selecione</em>
                   </MenuItem>
-                ))}
-              </TextField>
-            )}
+                  {employmentTypes.map((type) => (
+                    <MenuItem key={type} value={type}>
+                      {type}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              );
+            }}
           />
         </Box>
 
@@ -204,55 +220,63 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
           <Controller
             name="jobInfo.startDate"
             control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                fullWidth
-                label="Data de Início"
-                type="date"
-                error={!!error}
-                helperText={error?.message}
-                size="medium"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  min: new Date().toISOString().split('T')[0]
-                }}
-              />
-            )}
+            render={({ field, fieldState: { error, isTouched }, formState }) => {
+              const showError = !!error && (isTouched || formState.isSubmitted);
+              return (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label="Data de Início"
+                  type="date"
+                  required
+                  error={showError}
+                  helperText={showError ? error?.message : ''}
+                  size="medium"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    min: new Date().toISOString().split('T')[0]
+                  }}
+                />
+              );
+            }}
           />
 
           <Controller
             name="jobInfo.workSchedule"
             control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                fullWidth
-                select
-                label="Horário de Trabalho"
-                error={!!error}
-                helperText={error?.message}
-                size="medium"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Schedule color="action" fontSize="small" />
-                    </InputAdornment>
-                  ),
-                }}
-              >
-                <MenuItem value="">
-                  <em>Selecione</em>
-                </MenuItem>
-                {workSchedules.map((schedule) => (
-                  <MenuItem key={schedule} value={schedule}>
-                    {schedule}
+            render={({ field, fieldState: { error, isTouched }, formState }) => {
+              const showError = !!error && (isTouched || formState.isSubmitted);
+              return (
+                <TextField
+                  {...field}
+                  fullWidth
+                  select
+                  label="Horário de Trabalho"
+                  required
+                  error={showError}
+                  helperText={showError ? error?.message : ''}
+                  size="medium"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Schedule color="action" fontSize="small" />
+                      </InputAdornment>
+                    ),
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>Selecione</em>
                   </MenuItem>
-                ))}
-              </TextField>
-            )}
+                  {workSchedules.map((schedule) => (
+                    <MenuItem key={schedule} value={schedule}>
+                      {schedule}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              );
+            }}
           />
         </Box>
       </Stack>
