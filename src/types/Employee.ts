@@ -24,6 +24,12 @@ export interface JobInfo {
   startDate: string;
   workSchedule: string;
   employmentType: string;
+  // Novos campos adicionados
+  jobTitle: string; // Cargo
+  admissionDate: string; // Data de admissão
+  hierarchyLevel: 'junior' | 'pleno' | 'senior' | 'gestor'; // Nível hierárquico
+  managerId?: string; // ID do gestor responsável
+  baseSalary: number; // Salário base
 }
 
 export interface Employee {

@@ -150,7 +150,34 @@ export const jobInfoSchema = yup.object({
   employmentType: yup
     .string()
     .required('Tipo de contratação é obrigatório')
-    .oneOf(['CLT', 'PJ', 'Estagiário', 'Freelancer'], 'Tipo de contratação inválido')
+    .oneOf(['CLT', 'PJ', 'Estagiário', 'Freelancer'], 'Tipo de contratação inválido'),
+  
+  jobTitle: yup
+    .string()
+    .required('Título do cargo é obrigatório')
+    .min(2, 'Título do cargo deve ter pelo menos 2 caracteres')
+    .max(100, 'Título do cargo deve ter no máximo 100 caracteres'),
+  
+  admissionDate: yup
+    .string()
+    .required('Data de admissão é obrigatória'),
+  
+  hierarchyLevel: yup
+    .string()
+    .required('Nível hierárquico é obrigatório')
+    .oneOf(['junior', 'pleno', 'senior', 'gestor'], 'Nível hierárquico inválido'),
+  
+  managerId: yup
+    .string()
+    .optional()
+    .nullable(),
+  
+  baseSalary: yup
+    .number()
+    .required('Salário base é obrigatório')
+    .positive('Salário base deve ser um valor positivo')
+    .min(1000, 'Salário base deve ser pelo menos R$ 1.000')
+    .max(1000000, 'Salário base deve ser no máximo R$ 1.000.000')
 });
 
 export const employeeSchema = yup.object({

@@ -65,7 +65,12 @@ const steps = [
       'jobInfo.salary',
       'jobInfo.startDate',
       'jobInfo.workSchedule',
-      'jobInfo.employmentType'
+      'jobInfo.employmentType',
+      'jobInfo.jobTitle',
+      'jobInfo.admissionDate',
+      'jobInfo.hierarchyLevel',
+      'jobInfo.managerId',
+      'jobInfo.baseSalary'
     ]
   }
 ];
@@ -109,7 +114,12 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
         salary: 0,
         startDate: '',
         workSchedule: '',
-        employmentType: ''
+        employmentType: '',
+        jobTitle: '',
+        admissionDate: '',
+        hierarchyLevel: '',
+        managerId: '',
+        baseSalary: 0
       }
     }
   });
@@ -134,7 +144,8 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
           street: '', number: '', complement: '', neighborhood: '', city: '', state: '', zipCode: ''
         },
         jobInfo: {
-          position: '', department: '', salary: 0, startDate: '', workSchedule: '', employmentType: ''
+          position: '', department: '', salary: 0, startDate: '', workSchedule: '', employmentType: '',
+          jobTitle: '', admissionDate: '', hierarchyLevel: '', managerId: '', baseSalary: 0
         }
       } as any);
     }

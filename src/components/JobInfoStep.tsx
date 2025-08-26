@@ -6,12 +6,16 @@ import {
   InputAdornment,
   MenuItem,
   Stack,
+  FormControl,
+  InputLabel,
+  Select,
 } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import type { Control } from 'react-hook-form';
-import { Work, Business, AttachMoney, Schedule } from '@mui/icons-material';
+import { Work, Business, AttachMoney, Schedule, Person, CalendarToday, TrendingUp } from '@mui/icons-material';
 import type { Employee } from '../types/Employee';
 import { formatCurrency } from '../utils/formatters';
+import { EmployeeService } from '../services/employeeService';
 
 interface JobInfoStepProps {
   control: Control<Employee>;
@@ -46,8 +50,30 @@ const employmentTypes = [
   'Freelancer'
 ];
 
+const hierarchyLevels = [
+  { value: 'junior', label: 'Júnior' },
+  { value: 'pleno', label: 'Pleno' },
+  { value: 'senior', label: 'Sênior' },
+  { value: 'gestor', label: 'Gestor' }
+];
+
 export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
   const [salaryInput, setSalaryInput] = useState<string>('');
+  const [baseSalaryInput, setBaseSalaryInput] = useState<string>('');
+  const [managers, setManagers] = useState<Employee[]>([]);
+
+  // Carregar gestores disponíveis
+  useEffect(() => {
+    const loadManagers = async () => {
+      try {
+        const managersData = await EmployeeService.getManagersForSelection();
+        setManagers(managersData);
+      } catch (error) {
+        console.error('Erro ao carregar gestores:', error);
+      }
+    };
+    loadManagers();
+  }, []);
   return (
     <Box>
       <Typography 
@@ -89,7 +115,7 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
                 <TextField
                   {...field}
                   fullWidth
-                  label="Cargo"
+                  label="Posição"
                   placeholder="Ex: Desenvolvedor Frontend"
                   required
                   error={showError}
@@ -107,6 +133,111 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
             }}
           />
 
+          <Controller
+            name="jobInfo.jobTitle"
+            control={control}
+            render={({ field, fieldState: { error, isTouched }, formState }) => {
+              const showError = !!error && (isTouched || formState.isSubmitted);
+              return (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label="Cargo"
+                  placeholder="Ex: Analista de Sistemas"
+                  required
+                  error={showError}
+                  helperText={showError ? error?.message : ''}
+                  size="medium"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Business color="action" fontSize="small" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              );
+            }}
+          />
+
+        </Box>
+
+        <Box sx={{ 
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+          gap: { xs: 2, sm: 2 }
+        }}>
+          <Controller
+            name="jobInfo.admissionDate"
+            control={control}
+            render={({ field, fieldState: { error, isTouched }, formState }) => {
+              const showError = !!error && (isTouched || formState.isSubmitted);
+              return (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label="Data de Admissão"
+                  type="date"
+                  required
+                  error={showError}
+                  helperText={showError ? error?.message : ''}
+                  size="medium"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <CalendarToday color="action" fontSize="small" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              );
+            }}
+          />
+
+          <Controller
+            name="jobInfo.managerId"
+            control={control}
+            render={({ field, fieldState: { error, isTouched }, formState }) => {
+              const showError = !!error && (isTouched || formState.isSubmitted);
+              return (
+                <TextField
+                  {...field}
+                  fullWidth
+                  select
+                  label="Gestor Responsável"
+                  error={showError}
+                  helperText={showError ? error?.message : 'Opcional - apenas para não gestores'}
+                  size="medium"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Person color="action" fontSize="small" />
+                      </InputAdornment>
+                    ),
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>Nenhum</em>
+                  </MenuItem>
+                  {managers.map((manager) => (
+                    <MenuItem key={manager.id} value={manager.id}>
+                      {manager.personalInfo.firstName} {manager.personalInfo.lastName} - {manager.personalInfo.email}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              );
+            }}
+          />
+        </Box>
+
+        <Box sx={{ 
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+          gap: { xs: 2, sm: 2 }
+        }}>
           <Controller
             name="jobInfo.department"
             control={control}
@@ -142,6 +273,42 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
               );
             }}
           />
+
+          <Controller
+            name="jobInfo.hierarchyLevel"
+            control={control}
+            render={({ field, fieldState: { error, isTouched }, formState }) => {
+              const showError = !!error && (isTouched || formState.isSubmitted);
+              return (
+                <TextField
+                  {...field}
+                  fullWidth
+                  select
+                  label="Nível Hierárquico"
+                  required
+                  error={showError}
+                  helperText={showError ? error?.message : ''}
+                  size="medium"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <TrendingUp color="action" fontSize="small" />
+                      </InputAdornment>
+                    ),
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>Selecione</em>
+                  </MenuItem>
+                  {hierarchyLevels.map((level) => (
+                    <MenuItem key={level.value} value={level.value}>
+                      {level.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              );
+            }}
+          />
         </Box>
 
         <Box sx={{ 
@@ -169,7 +336,7 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
                 <TextField
                   value={salaryInput}
                   fullWidth
-                  label="Salário"
+                  label="Salário Total"
                   placeholder="5.000,00"
                   required
                   error={showError}
@@ -186,6 +353,57 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
                   onBlur={() => {
                     const value = typeof field.value === 'number' ? field.value : 0;
                     setSalaryInput(value ? formatCurrency(value).replace(/^R\$\s?/, '') : '');
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AttachMoney color="action" fontSize="small" />
+                      </InputAdornment>
+                    ),
+                    inputComponent: undefined
+                  }}
+                />
+              );
+            }}
+          />
+
+          <Controller
+            name="jobInfo.baseSalary"
+            control={control}
+            render={({ field, fieldState: { error, isTouched }, formState }) => {
+              const showError = !!error && (isTouched || formState.isSubmitted);
+              
+              useEffect(() => {
+                if (typeof field.value === 'number') {
+                  if (!field.value) {
+                    setBaseSalaryInput('');
+                  } else {
+                    setBaseSalaryInput(formatCurrency(field.value).replace(/^R\$\s?/, ''));
+                  }
+                }
+              }, [field.value]);
+              
+              return (
+                <TextField
+                  value={baseSalaryInput}
+                  fullWidth
+                  label="Salário Base"
+                  placeholder="4.000,00"
+                  required
+                  error={showError}
+                  helperText={showError ? error?.message : ''}
+                  size="medium"
+                  inputMode="numeric"
+                  onChange={(e) => {
+                    const digits = e.target.value.replace(/\D/g, '');
+                    const cents = parseInt(digits || '0', 10);
+                    const numeric = cents / 100;
+                    setBaseSalaryInput(numeric ? formatCurrency(numeric).replace(/^R\$\s?/, '') : '');
+                    field.onChange(numeric);
+                  }}
+                  onBlur={() => {
+                    const value = typeof field.value === 'number' ? field.value : 0;
+                    setBaseSalaryInput(value ? formatCurrency(value).replace(/^R\$\s?/, '') : '');
                   }}
                   InputProps={{
                     startAdornment: (

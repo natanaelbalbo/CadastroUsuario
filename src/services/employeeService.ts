@@ -7,6 +7,7 @@ import {
   deleteDoc,
   query,
   orderBy,
+  where,
   Timestamp 
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
@@ -86,6 +87,76 @@ export class EmployeeService {
     } catch (error) {
       console.error('Erro ao atualizar status do funcionário: ', error);
       throw new Error('Falha ao atualizar status do funcionário');
+    }
+  }
+
+  // Buscar gestores disponíveis para seleção
+  static async getManagersForSelection(): Promise<Employee[]> {
+    try {
+      const q = query(
+        collection(db, COLLECTION_NAME),
+        where('jobInfo.hierarchyLevel', '==', 'gestor'),
+        where('status', '==', 'active'),
+        orderBy('personalInfo.firstName')
+      );
+      const querySnapshot = await getDocs(q);
+      
+      const managers: Employee[] = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        managers.push({
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate(),
+          updatedAt: data.updatedAt?.toDate()
+        } as Employee);
+      });
+
+      return managers;
+    } catch (error) {
+      console.error('Erro ao buscar gestores: ', error);
+      throw new Error('Falha ao buscar gestores');
+    }
+  }
+
+  // Buscar colaboradores por departamento
+  static async getEmployeesByDepartment(department: string): Promise<Employee[]> {
+    try {
+      const q = query(
+        collection(db, COLLECTION_NAME),
+        where('jobInfo.department', '==', department),
+        where('status', '==', 'active'),
+        orderBy('personalInfo.firstName')
+      );
+      const querySnapshot = await getDocs(q);
+      
+      const employees: Employee[] = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        employees.push({
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate(),
+          updatedAt: data.updatedAt?.toDate()
+        } as Employee);
+      });
+
+      return employees;
+    } catch (error) {
+      console.error('Erro ao buscar colaboradores por departamento: ', error);
+      throw new Error('Falha ao buscar colaboradores por departamento');
+    }
+  }
+
+  // Deletar múltiplos colaboradores
+  static async deleteMultipleEmployees(ids: string[]): Promise<void> {
+    try {
+      const deletePromises = ids.map(id => deleteDoc(doc(db, COLLECTION_NAME, id)));
+      await Promise.all(deletePromises);
+      console.log(`${ids.length} colaboradores removidos com sucesso`);
+    } catch (error) {
+      console.error('Erro ao remover colaboradores: ', error);
+      throw new Error('Falha ao remover colaboradores');
     }
   }
 }
