@@ -18,11 +18,9 @@ import flugoLogo from '../assets/icon275.jpg';
 export const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isRegistering, setIsRegistering] = useState(false);
-  const { login, register } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   // Função para lidar com o submit do formulário
@@ -34,29 +32,15 @@ export const LoginForm: React.FC = () => {
       return;
     }
 
-    if (isRegistering && password !== confirmPassword) {
-      setError('As senhas não coincidem');
-      return;
-    }
-
-    if (isRegistering && password.length < 6) {
-      setError('A senha deve ter pelo menos 6 caracteres');
-      return;
-    }
-
     try {
       setError('');
       setLoading(true);
       
-      if (isRegistering) {
-        await register(email, password);
-      } else {
-        await login(email, password);
-      }
+      await login(email, password);
       
       navigate('/');
     } catch (error: any) {
-      console.error(isRegistering ? 'Erro no registro:' : 'Erro no login:', error);
+      console.error('Erro no login:', error);
       
 
       
@@ -67,12 +51,6 @@ export const LoginForm: React.FC = () => {
           break;
         case 'auth/wrong-password':
           setError('Senha incorreta');
-          break;
-        case 'auth/email-already-in-use':
-          setError('Este email já está em uso');
-          break;
-        case 'auth/weak-password':
-          setError('A senha é muito fraca');
           break;
         case 'auth/invalid-email':
           setError('Email inválido');
@@ -87,7 +65,7 @@ export const LoginForm: React.FC = () => {
           setError('Chave de API do Firebase inválida. Verifique as configurações.');
           break;
         default:
-          setError(isRegistering ? 'Erro ao criar conta. Tente novamente' : 'Erro ao fazer login. Tente novamente');
+          setError('Erro ao fazer login. Tente novamente');
       }
     } finally {
       setLoading(false);
@@ -127,7 +105,7 @@ export const LoginForm: React.FC = () => {
         </Avatar>
         
         <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
-          {isRegistering ? 'Criar Conta' : 'Entrar no Sistema'}
+          Entrar no Sistema
         </Typography>
 
         {error && (
@@ -159,27 +137,11 @@ export const LoginForm: React.FC = () => {
             label="Senha"
             type="password"
             id="password"
-            autoComplete={isRegistering ? "new-password" : "current-password"}
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={loading}
           />
-          
-          {isRegistering && (
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="confirmPassword"
-              label="Confirmar Senha"
-              type="password"
-              id="confirmPassword"
-              autoComplete="new-password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              disabled={loading}
-            />
-          )}
           
           <Button
             type="submit"
@@ -191,25 +153,8 @@ export const LoginForm: React.FC = () => {
             {loading ? (
               <CircularProgress size={24} color="inherit" />
             ) : (
-              isRegistering ? 'Criar Conta' : 'Entrar'
+              'Entrar'
             )}
-          </Button>
-          
-          <Button
-            fullWidth
-            variant="text"
-            onClick={() => {
-              setIsRegistering(!isRegistering);
-              setError('');
-              setConfirmPassword('');
-            }}
-            disabled={loading}
-            sx={{ textTransform: 'none' }}
-          >
-            {isRegistering 
-              ? 'Já tem uma conta? Fazer login' 
-              : 'Não tem uma conta? Criar conta'
-            }
           </Button>
         </Box>
       </Paper>
