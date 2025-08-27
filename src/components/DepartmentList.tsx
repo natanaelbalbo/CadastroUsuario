@@ -19,7 +19,6 @@ import {
   DialogContent,
   DialogActions,
   Checkbox,
-  Toolbar,
   Tooltip,
   TextField,
   InputAdornment

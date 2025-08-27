@@ -13,6 +13,7 @@ import {
   LinearProgress,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ArrowBack, ArrowForward, CheckCircle } from '@mui/icons-material';
 import type { Employee } from '../types/Employee';
@@ -88,7 +89,7 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
   const [employeeId, setEmployeeId] = useState<string | null>(null);
 
   const { control, handleSubmit, trigger, reset } = useForm<Employee>({
-    resolver: yupResolver(employeeSchema),
+    resolver: yupResolver(employeeSchema) as any,
     mode: 'onBlur',
     defaultValues: {
       personalInfo: employee?.personalInfo ?? {
@@ -117,7 +118,7 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
         employmentType: '',
         jobTitle: '',
         admissionDate: '',
-        hierarchyLevel: '',
+        hierarchyLevel: 'junior',
         managerId: '',
         baseSalary: 0
       }
@@ -178,7 +179,7 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
     setError(null);
   };
 
-  const onSubmit = async (data: Employee) => {
+  const onSubmit: SubmitHandler<Employee> = async (data) => {
     setLoading(true);
     setError(null);
     
@@ -222,7 +223,7 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
 
   const renderStepContent = () => {
     const StepComponent = steps[currentStep].component;
-    return <StepComponent control={control} />;
+    return <StepComponent control={control as any} />;
   };
 
   if (success) {
@@ -483,7 +484,7 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
               
               {isLastStep ? (
                 <Button
-                  onClick={handleSubmit(onSubmit)}
+                  onClick={handleSubmit(onSubmit as any)}
                   variant="contained"
                   disabled={loading}
                   startIcon={loading ? <CircularProgress size={20} /> : <CheckCircle />}

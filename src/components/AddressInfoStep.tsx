@@ -14,7 +14,7 @@ import type { Employee } from '../types/Employee';
 import { formatZipCode } from '../utils/formatters';
 
 interface AddressInfoStepProps {
-  control: Control<Employee>;
+  control: Control<Employee, any>;
 }
 
 // Estados brasileiros

@@ -6,9 +6,6 @@ import {
   InputAdornment,
   MenuItem,
   Stack,
-  FormControl,
-  InputLabel,
-  Select,
 } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import type { Control } from 'react-hook-form';
@@ -20,7 +17,7 @@ import { EmployeeService } from '../services/employeeService';
 import { DepartmentService } from '../services/departmentService';
 
 interface JobInfoStepProps {
-  control: Control<Employee>;
+  control: Control<Employee, any>;
 }
 
 // Lista de departamentos será carregada dinamicamente do sistema

@@ -217,10 +217,7 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({ onNewEmployee, onEdi
     }).format(salary);
   };
 
-  const formatDate = (date?: Date) => {
-    if (!date) return 'Não informado';
-    return new Intl.DateTimeFormat('pt-BR').format(new Date(date));
-  };
+
 
   const getHierarchyLevelLabel = (level?: string) => {
     const levels: Record<string, string> = {

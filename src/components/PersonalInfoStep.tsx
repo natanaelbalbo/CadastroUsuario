@@ -13,7 +13,7 @@ import type { Employee } from '../types/Employee';
 import { formatCPF, formatPhone } from '../utils/formatters';
 
 interface PersonalInfoStepProps {
-  control: Control<Employee>;
+  control: Control<Employee, any>;
 }
 
 export const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({ control }) => {

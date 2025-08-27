@@ -4,7 +4,6 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
   Avatar,
   Menu,
   MenuItem,
@@ -71,7 +70,7 @@ export const Dashboard: React.FC = () => {
   };
 
   // Handlers para navegação entre views
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
     if (newValue === 0) {
       setCurrentView('employees');

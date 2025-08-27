@@ -5,7 +5,6 @@ import {
   Typography,
   TextField,
   Button,
-  Grid,
   Alert,
   CircularProgress,
   FormControl,
@@ -20,10 +19,10 @@ import {
   IconButton,
   InputAdornment,
   Divider,
-  Chip,
   Checkbox,
   Avatar
 } from '@mui/material';
+
 import { 
   Save, 
   Cancel, 
@@ -283,9 +282,9 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
                  Informações Básicas
               </Typography>
               
-              <Grid container spacing={3}>
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
                 {/* Nome do Departamento */}
-                <Grid item xs={12} md={6}>
+                <Box>
                   <TextField
                     fullWidth
                     label="Nome do Departamento"
@@ -308,11 +307,11 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
                         </InputAdornment>
                       )
                     }}
-                  />
-                </Grid>
-
-                {/* Gestor Responsável */}
-                <Grid item xs={12} md={6}>
+                  />  
+                </Box>
+  
+                  {/* Gestor Responsável */}
+                  <Box>
                   <FormControl fullWidth required disabled={loading}>
                     <InputLabel>Gestor Responsável</InputLabel>
                     <Select
@@ -345,8 +344,8 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
                       ))}
                     </Select>
                   </FormControl>
-                </Grid>
-              </Grid>
+                </Box>
+               </Box>
             </Box>
 
             {/* Seção: Descrição */}
@@ -569,8 +568,7 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
             <Divider sx={{ my: 4 }} />
 
             {/* Botões de Ação */}
-            <Grid item xs={12}>
-              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+             <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
                 <Button
                   variant="outlined"
                   onClick={onCancel}
@@ -626,7 +624,6 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
                   )}
                 </Button>
               </Box>
-            </Grid>
           </form>
         </Box>
       </Paper>
