@@ -1,22 +1,50 @@
-# Sistema de Cadastro de Funcionários 
-Sistema web para cadastro e gerenciamento de funcionários desenvolvido com React, TypeScript e Firebase
+# Sistema de Gestão de Funcionários e Departamentos
+Sistema web completo para gestão de funcionários e departamentos com autenticação, dashboard e relatórios desenvolvido com React, TypeScript e Firebase
 
-## � Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - **Frontend:** React 18 + TypeScript + Vite
 - **UI Library:** Material UI (MUI) v5  
 - **Formulários:** React Hook Form + Yup
+- **Autenticação:** Firebase Authentication
 - **Backend:** Firebase Firestore
+- **Roteamento:** React Router DOM
 - **Estilização:** Emotion (integrado ao MUI)
 
 ## Funcionalidades
 
+### Autenticação
+- Sistema de login com Firebase Authentication
+- Proteção de rotas privadas
+- Logout seguro
+
+### Gestão de Funcionários
 - Formulário multi-step para cadastro de funcionários
-- Listagem de funcionários cadastrados
+- Listagem completa com filtros e busca
 - Edição e exclusão de funcionários
 - Validação completa de formulários
 - Formatação automática de campos (CPF, telefone, CEP, salário)
+- Informações hierárquicas (júnior, pleno, sênior, gestor)
+- Vinculação com gestores responsáveis
+
+### Gestão de Departamentos
+- Cadastro e edição de departamentos
+- Listagem de departamentos com informações detalhadas
+- Vinculação de gestores responsáveis
+- Associação de funcionários aos departamentos
+- Exclusão de departamentos
+
+### Dashboard
+- Visão geral do sistema
+- Estatísticas de funcionários e departamentos
+- Navegação rápida entre funcionalidades
+- Interface responsiva e intuitiva
+
+### Outras Funcionalidades
 - Persistência de dados no Firebase Firestore
+- Interface responsiva para desktop e mobile
+- Tema personalizado com cores da empresa
+- Tratamento de erros e loading states
 
 ## Pré-requisitos
 
@@ -84,22 +112,39 @@ npm run dev
 
 O projeto estará disponível em: `http://localhost:5173`
 
+## Credenciais de Acesso
+
+Para acessar o sistema, utilize as seguintes credenciais:
+
+- **Email:** nfigueredobalbo@gmail.com
+- **Senha:** natan123
+
 ## Estrutura do Projeto
 
 ```
 src/
 ├── components/          # Componentes React
+│   ├── Dashboard.tsx
+│   ├── LoginForm.tsx
+│   ├── PrivateRoute.tsx
 │   ├── EmployeeRegistrationForm.tsx
+│   ├── EmployeeList.tsx
 │   ├── PersonalInfoStep.tsx
 │   ├── AddressInfoStep.tsx
 │   ├── JobInfoStep.tsx
-│   └── EmployeeList.tsx
+│   ├── DepartmentForm.tsx
+│   ├── DepartmentList.tsx
+│   └── NotFound.tsx
+├── contexts/           # Contextos React
+│   └── AuthContext.tsx
 ├── hooks/              # Custom hooks
 │   └── useMultiStepForm.ts
 ├── services/           # Serviços (Firebase, APIs)
-│   └── employeeService.ts
+│   ├── employeeService.ts
+│   └── departmentService.ts
 ├── types/              # Interfaces TypeScript
-│   └── Employee.ts
+│   ├── Employee.ts
+│   └── Department.ts
 ├── config/             # Configurações
 │   └── firebase.ts
 ├── utils/              # Funções utilitárias
@@ -113,17 +158,43 @@ src/
 
 ## Como Usar
 
-### Cadastrar um novo funcionário
-1. Na tela inicial, clique em "Novo Colaborador"
+### Fazer Login
+1. Acesse a aplicação
+2. Digite as credenciais fornecidas acima
+3. Clique em "Entrar"
+
+### Gerenciar Funcionários
+
+#### Cadastrar um novo funcionário
+1. No dashboard, clique em "Cadastrar Funcionário"
 2. Preencha as informações pessoais (Etapa 1)
 3. Preencha o endereço (Etapa 2)
 4. Preencha as informações profissionais (Etapa 3)
 5. Clique em "Finalizar Cadastro"
 
-### Gerenciar funcionários
-- **Editar:** Clique no ícone de lápis na listagem
-- **Excluir:** Clique no ícone de lixeira e confirme a ação
-- **Voltar ao menu:** Use o botão "Voltar ao menu" a qualquer momento
+#### Listar e gerenciar funcionários
+1. No dashboard, clique em "Listar Funcionários"
+2. **Editar:** Clique no ícone de lápis na listagem
+3. **Excluir:** Clique no ícone de lixeira e confirme a ação
+4. **Buscar:** Use a barra de pesquisa para filtrar funcionários
+
+### Gerenciar Departamentos
+
+#### Cadastrar um novo departamento
+1. No dashboard, clique em "Cadastrar Departamento"
+2. Preencha o nome do departamento
+3. Selecione o gestor responsável
+4. Adicione funcionários ao departamento (opcional)
+5. Clique em "Salvar Departamento"
+
+#### Listar e gerenciar departamentos
+1. No dashboard, clique em "Listar Departamentos"
+2. **Editar:** Clique no ícone de lápis na listagem
+3. **Excluir:** Clique no ícone de lixeira e confirme a ação
+4. **Visualizar:** Veja detalhes dos funcionários vinculados
+
+### Sair do Sistema
+- Clique no botão "Sair" no canto superior direito a qualquer momento
 
 ## Build para Produção
 
@@ -133,7 +204,7 @@ npm run build
 
 Os arquivos de produção serão gerados na pasta `dist/`.
 
-## � Scripts Disponíveis
+## Scripts Disponíveis
 
 - `npm run dev` - Executa em modo de desenvolvimento
 - `npm run build` - Gera build de produção
