@@ -14,25 +14,16 @@ import { Controller } from 'react-hook-form';
 import type { Control } from 'react-hook-form';
 import { Work, Business, AttachMoney, Schedule, Person, CalendarToday, TrendingUp } from '@mui/icons-material';
 import type { Employee } from '../types/Employee';
+import type { Department } from '../types/Department';
 import { formatCurrency } from '../utils/formatters';
 import { EmployeeService } from '../services/employeeService';
+import { DepartmentService } from '../services/departmentService';
 
 interface JobInfoStepProps {
   control: Control<Employee>;
 }
 
-const departments = [
-  'Tecnologia',
-  'Design',
-  'Marketing',
-  'Vendas',
-  'Financeiro',
-  'Recursos Humanos',
-  'Produto',
-  'Operações',
-  'Atendimento ao Cliente',
-  'Administrativo'
-];
+// Lista de departamentos será carregada dinamicamente do sistema
 
 const workSchedules = [
   '08:00 - 17:00',
@@ -61,6 +52,7 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
   const [salaryInput, setSalaryInput] = useState<string>('');
   const [baseSalaryInput, setBaseSalaryInput] = useState<string>('');
   const [managers, setManagers] = useState<Employee[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
 
   // Carregar gestores disponíveis
   useEffect(() => {
@@ -73,6 +65,19 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
       }
     };
     loadManagers();
+  }, []);
+
+  // Carregar departamentos cadastrados no sistema
+  useEffect(() => {
+    const loadDepartments = async () => {
+      try {
+        const departmentsData = await DepartmentService.getAllDepartments();
+        setDepartments(departmentsData);
+      } catch (error) {
+        console.error('Erro ao carregar departamentos:', error);
+      }
+    };
+    loadDepartments();
   }, []);
   return (
     <Box>
@@ -265,8 +270,8 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
                     <em>Selecione</em>
                   </MenuItem>
                   {departments.map((dept) => (
-                    <MenuItem key={dept} value={dept}>
-                      {dept}
+                    <MenuItem key={dept.id} value={dept.name}>
+                      {dept.name}
                     </MenuItem>
                   ))}
                 </TextField>
