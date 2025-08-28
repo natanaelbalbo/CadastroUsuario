@@ -36,6 +36,8 @@ import {
   Group
 } from '@mui/icons-material';
 
+import { PageHeader } from './common/PageHeader';
+
 import { DepartmentService } from '../services/departmentService';
 import { EmployeeService } from '../services/employeeService';
 import type { Department } from '../types/Department';
@@ -151,26 +153,11 @@ export const DepartmentAssignmentForm: React.FC<DepartmentAssignmentFormProps> =
           overflow: 'hidden'
         }}
       >
-        {/* Cabeçalho */}
-        <Box 
-          sx={{ 
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
-            p: 4,
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Assignment sx={{ fontSize: 32 }} />
-            <Box>
-              <Typography variant="h4" fontWeight={700}>
-                Gerenciar Atribuições
-              </Typography>
-              <Typography variant="body1" sx={{ opacity: 0.9 }}>
-                Atribua gestores e funcionários aos departamentos
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
+        <PageHeader
+          title="Gerenciar Atribuições"
+          description="Atribua gestores e funcionários aos departamentos"
+          icon={<Assignment />}
+        />
 
         <Box sx={{ p: 4 }}>
           {error && (
@@ -192,35 +179,91 @@ export const DepartmentAssignmentForm: React.FC<DepartmentAssignmentFormProps> =
           )}
 
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 4 }}>
-            {/* Departamentos sem Gestor */}
             <Box>
-              <Card sx={{ height: 'fit-content' }}>
-                <CardContent>
-                  <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Person color="warning" />
-                    Departamentos sem Gestor ({departmentsWithoutManager.length})
-                  </Typography>
+              <Card sx={{ 
+                height: 'fit-content',
+                border: '2px solid',
+                borderColor: 'warning.light',
+                borderRadius: 3,
+                boxShadow: '0 4px 12px rgba(245, 158, 11, 0.15)'
+              }}>
+                <CardContent sx={{ p: 3 }}>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: 1.5, 
+                    mb: 3,
+                    p: 2,
+                    backgroundColor: 'warning.50',
+                    borderRadius: 2,
+                    border: '1px solid',
+                    borderColor: 'warning.200'
+                  }}>
+                    <Box sx={{ 
+                      p: 1.5, 
+                      borderRadius: 2, 
+                      backgroundColor: 'warning.main',
+                      color: 'white'
+                    }}>
+                      <Person sx={{ fontSize: 20 }} />
+                    </Box>
+                    <Box>
+                      <Typography variant="h6" fontWeight={600} color="warning.dark">
+                        Departamentos sem Gestor
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {departmentsWithoutManager.length} departamento(s) precisam de gestor
+                      </Typography>
+                    </Box>
+                  </Box>
                   
                   {departmentsWithoutManager.length === 0 ? (
-                    <Typography variant="body2" color="text.secondary">
-                      Todos os departamentos têm gestores atribuídos.
-                    </Typography>
+                    <Box sx={{ 
+                      textAlign: 'center', 
+                      py: 3,
+                      color: 'text.secondary'
+                    }}>
+                      <Person sx={{ fontSize: 48, opacity: 0.3, mb: 1 }} />
+                      <Typography variant="body2">
+                        Todos os departamentos têm gestores atribuídos.
+                      </Typography>
+                    </Box>
                   ) : (
-                    <List>
-                      {departmentsWithoutManager.map((dept) => (
-                        <ListItem key={dept.id} sx={{ px: 0 }}>
+                    <List sx={{ p: 0 }}>
+                      {departmentsWithoutManager.map((dept, index) => (
+                        <ListItem 
+                          key={dept.id} 
+                          sx={{ 
+                            px: 0, 
+                            py: 2,
+                            borderBottom: index < departmentsWithoutManager.length - 1 ? '1px solid' : 'none',
+                            borderColor: 'divider'
+                          }}
+                        >
                           <ListItemAvatar>
-                            <Avatar sx={{ bgcolor: 'warning.main' }}>
+                            <Avatar sx={{ 
+                              bgcolor: 'warning.main',
+                              width: 44,
+                              height: 44
+                            }}>
                               <Business />
                             </Avatar>
                           </ListItemAvatar>
                           <ListItemText
-                            primary={dept.name}
-                            secondary={dept.description || 'Sem descrição'}
+                            primary={
+                              <Typography variant="body1" fontWeight={500}>
+                                {dept.name}
+                              </Typography>
+                            }
+                            secondary={
+                              <Typography variant="body2" color="text.secondary">
+                                {dept.description || 'Sem descrição'}
+                              </Typography>
+                            }
                           />
                           <ListItemSecondaryAction>
                             <Button
-                              variant="outlined"
+                              variant="contained"
                               size="small"
                               startIcon={<PersonAdd />}
                               onClick={() => setAssignManagerDialog({ 
@@ -228,6 +271,16 @@ export const DepartmentAssignmentForm: React.FC<DepartmentAssignmentFormProps> =
                                 department: dept 
                               })}
                               disabled={loading || managers.length === 0}
+                              sx={{
+                                backgroundColor: 'warning.main',
+                                color: 'white',
+                                '&:hover': {
+                                  backgroundColor: 'warning.dark'
+                                },
+                                borderRadius: 2,
+                                textTransform: 'none',
+                                fontWeight: 600
+                              }}
                             >
                               Atribuir Gestor
                             </Button>
@@ -240,41 +293,101 @@ export const DepartmentAssignmentForm: React.FC<DepartmentAssignmentFormProps> =
               </Card>
             </Box>
 
-            {/* Funcionários sem Departamento */}
             <Box>
-              <Card sx={{ height: 'fit-content' }}>
-                <CardContent>
-                  <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Group color="info" />
-                    Funcionários sem Departamento ({employeesWithoutDepartment.length})
-                  </Typography>
+              <Card sx={{ 
+                height: 'fit-content',
+                border: '2px solid',
+                borderColor: 'primary.light',
+                borderRadius: 3,
+                boxShadow: '0 4px 12px rgba(34, 197, 94, 0.15)'
+              }}>
+                <CardContent sx={{ p: 3 }}>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: 1.5, 
+                    mb: 3,
+                    p: 2,
+                    backgroundColor: 'primary.50',
+                    borderRadius: 2,
+                    border: '1px solid',
+                    borderColor: 'primary.200'
+                  }}>
+                    <Box sx={{ 
+                      p: 1.5, 
+                      borderRadius: 2, 
+                      backgroundColor: 'primary.main',
+                      color: 'white'
+                    }}>
+                      <Group sx={{ fontSize: 20 }} />
+                    </Box>
+                    <Box>
+                      <Typography variant="h6" fontWeight={600} color="primary.dark">
+                        Funcionários sem Departamento
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {employeesWithoutDepartment.length} funcionário(s) sem departamento
+                      </Typography>
+                    </Box>
+                  </Box>
                   
                   {employeesWithoutDepartment.length === 0 ? (
-                    <Typography variant="body2" color="text.secondary">
-                      Todos os funcionários estão atribuídos a departamentos.
-                    </Typography>
+                    <Box sx={{ 
+                      textAlign: 'center', 
+                      py: 3,
+                      color: 'text.secondary'
+                    }}>
+                      <Group sx={{ fontSize: 48, opacity: 0.3, mb: 1 }} />
+                      <Typography variant="body2">
+                        Todos os funcionários estão atribuídos a departamentos.
+                      </Typography>
+                    </Box>
                   ) : (
                     <>
-                      <List sx={{ maxHeight: 300, overflowY: 'auto' }}>
-                        {employeesWithoutDepartment.map((emp) => (
-                          <ListItem key={emp.id} sx={{ px: 0 }}>
+                      <List sx={{ maxHeight: 300, overflowY: 'auto', p: 0 }}>
+                        {employeesWithoutDepartment.map((emp, index) => (
+                          <ListItem 
+                            key={emp.id} 
+                            sx={{ 
+                              px: 0, 
+                              py: 2,
+                              borderBottom: index < employeesWithoutDepartment.length - 1 ? '1px solid' : 'none',
+                              borderColor: 'divider'
+                            }}
+                          >
                             <ListItemAvatar>
-                              <Avatar>
+                              <Avatar sx={{ 
+                                bgcolor: 'primary.main',
+                                color: 'white',
+                                width: 44,
+                                height: 44,
+                                fontSize: '1.1rem',
+                                fontWeight: 600
+                              }}>
                                 {emp.personalInfo.firstName.charAt(0)}
                               </Avatar>
                             </ListItemAvatar>
                             <ListItemText
-                              primary={`${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`}
+                              primary={
+                                <Typography variant="body1" fontWeight={500}>
+                                  {emp.personalInfo.firstName} {emp.personalInfo.lastName}
+                                </Typography>
+                              }
                               secondary={
-                                <Box>
-                                  <Typography variant="caption" display="block">
+                                <Box sx={{ mt: 0.5 }}>
+                                  <Typography variant="body2" color="text.secondary" display="block">
                                     {emp.personalInfo.email}
                                   </Typography>
                                   <Chip 
                                     label={emp.jobInfo.hierarchyLevel} 
                                     size="small" 
                                     variant="outlined"
-                                    sx={{ mt: 0.5 }}
+                                    sx={{ 
+                                      mt: 0.5,
+                                      borderColor: 'primary.main',
+                                      color: 'primary.main',
+                                      backgroundColor: 'primary.50'
+                                    }}
                                   />
                                 </Box>
                               }
@@ -291,7 +404,19 @@ export const DepartmentAssignmentForm: React.FC<DepartmentAssignmentFormProps> =
                             open: true 
                           })}
                           disabled={loading}
-                          sx={{ mt: 2, width: '100%' }}
+                          sx={{ 
+                            mt: 3, 
+                            width: '100%',
+                            py: 1.5,
+                            borderRadius: 2,
+                            backgroundColor: 'primary.main',
+                            '&:hover': {
+                              backgroundColor: 'primary.dark'
+                            },
+                            textTransform: 'none',
+                            fontWeight: 600,
+                            fontSize: '0.95rem'
+                          }}
                         >
                           Atribuir a Departamento
                         </Button>
@@ -303,13 +428,31 @@ export const DepartmentAssignmentForm: React.FC<DepartmentAssignmentFormProps> =
             </Box>
           </Box>
 
-          <Divider sx={{ my: 4 }} />
+          <Divider sx={{ my: 4, borderColor: 'divider', opacity: 0.7 }} />
 
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'flex-end',
+            pt: 2
+          }}>
             <Button
               variant="outlined"
               onClick={onClose}
               disabled={loading}
+              sx={{
+                borderRadius: 2,
+                px: 4,
+                py: 1.5,
+                borderColor: 'grey.300',
+                color: 'text.secondary',
+                '&:hover': {
+                  borderColor: 'primary.main',
+                  backgroundColor: 'primary.50',
+                  color: 'primary.main'
+                },
+                textTransform: 'none',
+                fontWeight: 600
+              }}
             >
               Fechar
             </Button>
@@ -317,23 +460,53 @@ export const DepartmentAssignmentForm: React.FC<DepartmentAssignmentFormProps> =
         </Box>
       </Paper>
 
-      {/* Dialog para Atribuir Gestor */}
       <Dialog 
         open={assignManagerDialog.open} 
         onClose={() => setAssignManagerDialog({ open: false })}
         maxWidth="sm"
         fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.12)'
+          }
+        }}
       >
-        <DialogTitle>
-          Atribuir Gestor ao Departamento
+        <DialogTitle sx={{ 
+          pb: 1,
+          borderBottom: '1px solid',
+          borderColor: 'divider'
+        }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <Avatar sx={{ 
+              bgcolor: 'primary.main',
+              width: 32,
+              height: 32
+            }}>
+              <PersonAdd sx={{ fontSize: 20 }} />
+            </Avatar>
+            <Typography variant="h6" fontWeight={600}>
+              Atribuir Gestor ao Departamento
+            </Typography>
+          </Box>
         </DialogTitle>
-        <DialogContent>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-            Departamento: <strong>{assignManagerDialog.department?.name}</strong>
-          </Typography>
+        <DialogContent sx={{ pt: 3 }}>
+          <Alert 
+            severity="info" 
+            sx={{ 
+              mb: 3,
+              borderRadius: 2,
+              backgroundColor: 'primary.50',
+              borderColor: 'primary.200'
+            }}
+          >
+            <Typography variant="body2">
+              <strong>Departamento:</strong> {assignManagerDialog.department?.name}
+            </Typography>
+          </Alert>
           
           {managers.length === 0 ? (
-            <Alert severity="info">
+            <Alert severity="warning" sx={{ borderRadius: 2 }}>
               Nenhum funcionário com nível "Gestor" encontrado. 
               Cadastre funcionários com nível hierárquico de gestor primeiro.
             </Alert>
@@ -351,16 +524,32 @@ export const DepartmentAssignmentForm: React.FC<DepartmentAssignmentFormProps> =
                     );
                   }
                 }}
+                sx={{
+                  borderRadius: 2,
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main'
+                  }
+                }}
               >
                 {managers.map((manager) => (
                   <MenuItem key={manager.id} value={manager.id}>
-                    <Box>
-                      <Typography variant="body1">
-                        {manager.personalInfo.firstName} {manager.personalInfo.lastName}
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        {manager.personalInfo.email}
-                      </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 1 }}>
+                      <Avatar sx={{ 
+                        bgcolor: 'primary.main',
+                        width: 32,
+                        height: 32,
+                        fontSize: '0.875rem'
+                      }}>
+                        {manager.personalInfo.firstName.charAt(0)}
+                      </Avatar>
+                      <Box>
+                        <Typography variant="body1" fontWeight={500}>
+                          {manager.personalInfo.firstName} {manager.personalInfo.lastName}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          {manager.personalInfo.email}
+                        </Typography>
+                      </Box>
                     </Box>
                   </MenuItem>
                 ))}
@@ -368,24 +557,51 @@ export const DepartmentAssignmentForm: React.FC<DepartmentAssignmentFormProps> =
             </FormControl>
           )}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setAssignManagerDialog({ open: false })}>
+        <DialogActions sx={{ p: 3, pt: 2 }}>
+          <Button 
+            onClick={() => setAssignManagerDialog({ open: false })}
+            sx={{
+              textTransform: 'none',
+              fontWeight: 600,
+              borderRadius: 2
+            }}
+          >
             Cancelar
           </Button>
         </DialogActions>
       </Dialog>
 
-      {/* Dialog para Atribuir Funcionários a Departamento */}
       <Dialog
         open={assignEmployeesDialog.open}
         onClose={() => setAssignEmployeesDialog({ open: false })}
         maxWidth="md"
         fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.12)'
+          }
+        }}
       >
-        <DialogTitle>
-          Atribuir Funcionários a Departamento
+        <DialogTitle sx={{ 
+          pb: 1,
+          borderBottom: '1px solid',
+          borderColor: 'divider'
+        }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <Avatar sx={{ 
+              bgcolor: 'primary.main',
+              width: 32,
+              height: 32
+            }}>
+              <Group sx={{ fontSize: 20 }} />
+            </Avatar>
+            <Typography variant="h6" fontWeight={600}>
+              Atribuir Funcionários a Departamento
+            </Typography>
+          </Box>
         </DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ pt: 3 }}>
           <FormControl fullWidth sx={{ mb: 3 }}>
             <InputLabel>Selecionar Departamento</InputLabel>
             <Select
@@ -398,10 +614,21 @@ export const DepartmentAssignmentForm: React.FC<DepartmentAssignmentFormProps> =
                   department: selectedDept 
                 });
               }}
+              sx={{
+                borderRadius: 2,
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'primary.main'
+                }
+              }}
             >
               {allDepartments.map((dept) => (
                 <MenuItem key={dept.id} value={dept.name}>
-                  {dept.name}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 0.5 }}>
+                    <Business sx={{ fontSize: 20, color: 'primary.main' }} />
+                    <Typography variant="body1" fontWeight={500}>
+                      {dept.name}
+                    </Typography>
+                  </Box>
                 </MenuItem>
               ))}
             </Select>
@@ -409,15 +636,43 @@ export const DepartmentAssignmentForm: React.FC<DepartmentAssignmentFormProps> =
 
           {assignEmployeesDialog.department && (
             <>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Selecione os funcionários para o departamento: <strong>{assignEmployeesDialog.department.name}</strong>
+              <Alert 
+                severity="info" 
+                sx={{ 
+                  mb: 3,
+                  borderRadius: 2,
+                  backgroundColor: 'primary.50',
+                  borderColor: 'primary.200'
+                }}
+              >
+                <Typography variant="body2">
+                  <strong>Departamento selecionado:</strong> {assignEmployeesDialog.department.name}
+                </Typography>
+              </Alert>
+              
+              <Typography variant="body1" fontWeight={500} sx={{ mb: 2 }}>
+                Selecione os funcionários:
               </Typography>
               
-              <List sx={{ maxHeight: 300, overflowY: 'auto', border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
-                {employeesWithoutDepartment.map((emp) => (
+              <List sx={{ 
+                maxHeight: 300, 
+                overflowY: 'auto', 
+                border: '2px solid', 
+                borderColor: 'primary.200', 
+                borderRadius: 2,
+                backgroundColor: 'background.paper'
+              }}>
+                {employeesWithoutDepartment.map((emp, index) => (
                   <ListItem 
                     key={emp.id} 
-                    sx={{ cursor: 'pointer' }}
+                    sx={{ 
+                      cursor: 'pointer',
+                      '&:hover': {
+                        backgroundColor: 'primary.50'
+                      },
+                      borderBottom: index < employeesWithoutDepartment.length - 1 ? '1px solid' : 'none',
+                      borderColor: 'divider'
+                    }}
                     onClick={() => {
                     setSelectedEmployees(prev => 
                       prev.includes(emp.id!)
@@ -429,28 +684,69 @@ export const DepartmentAssignmentForm: React.FC<DepartmentAssignmentFormProps> =
                       <Checkbox
                         checked={selectedEmployees.includes(emp.id!)}
                         onChange={() => {}}
+                        sx={{
+                          color: 'primary.main',
+                          '&.Mui-checked': {
+                            color: 'primary.main'
+                          }
+                        }}
                       />
                     </ListItemAvatar>
                     <ListItemAvatar>
-                      <Avatar>
+                      <Avatar sx={{ 
+                        bgcolor: selectedEmployees.includes(emp.id!) ? 'primary.main' : 'grey.300',
+                        color: selectedEmployees.includes(emp.id!) ? 'white' : 'text.secondary',
+                        transition: 'all 0.3s ease'
+                      }}>
                         {emp.personalInfo.firstName.charAt(0)}
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
-                      primary={`${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`}
-                      secondary={emp.personalInfo.email}
+                      primary={
+                        <Typography variant="body1" fontWeight={500}>
+                          {emp.personalInfo.firstName} {emp.personalInfo.lastName}
+                        </Typography>
+                      }
+                      secondary={
+                        <Typography variant="body2" color="text.secondary">
+                          {emp.personalInfo.email}
+                        </Typography>
+                      }
                     />
                   </ListItem>
                 ))}
               </List>
+              
+              {selectedEmployees.length > 0 && (
+                <Alert 
+                  severity="success" 
+                  sx={{ 
+                    mt: 2,
+                    borderRadius: 2,
+                    backgroundColor: 'success.50',
+                    borderColor: 'success.200'
+                  }}
+                >
+                  <Typography variant="body2">
+                    {selectedEmployees.length} funcionário(s) selecionado(s)
+                  </Typography>
+                </Alert>
+              )}
             </>
           )}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => {
-            setAssignEmployeesDialog({ open: false });
-            setSelectedEmployees([]);
-          }}>
+        <DialogActions sx={{ p: 3, pt: 2, gap: 2 }}>
+          <Button 
+            onClick={() => {
+              setAssignEmployeesDialog({ open: false });
+              setSelectedEmployees([]);
+            }}
+            sx={{
+              textTransform: 'none',
+              fontWeight: 600,
+              borderRadius: 2
+            }}
+          >
             Cancelar
           </Button>
           <Button
@@ -463,6 +759,16 @@ export const DepartmentAssignmentForm: React.FC<DepartmentAssignmentFormProps> =
                   selectedEmployees
                 );
               }
+            }}
+            sx={{
+              borderRadius: 2,
+              px: 3,
+              backgroundColor: 'primary.main',
+              '&:hover': {
+                backgroundColor: 'primary.dark'
+              },
+              textTransform: 'none',
+              fontWeight: 600
             }}
           >
             Atribuir ({selectedEmployees.length})

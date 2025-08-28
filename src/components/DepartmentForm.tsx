@@ -35,6 +35,7 @@ import {
   PersonAdd, 
   PersonOff 
 } from '@mui/icons-material';
+import { PageHeader } from './common/PageHeader';
 import { DepartmentService } from '../services/departmentService';
 import { EmployeeService } from '../services/employeeService';
 import type { Department } from '../types/Department';
@@ -183,51 +184,14 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
           overflow: 'hidden'
         }}
       >
-        {/* Cabeçalho aprimorado */}
-        <Box 
-          sx={{ 
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
-            p: 4,
-            position: 'relative',
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: 'rgba(255, 255, 255, 0.1)',
-              backdropFilter: 'blur(10px)'
-            }
-          }}
-        >
-          <Box sx={{ position: 'relative', zIndex: 1 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <Box 
-                sx={{ 
-                  p: 2, 
-                  borderRadius: 2, 
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                  backdropFilter: 'blur(10px)'
-                }}
-              >
-                <Business sx={{ fontSize: 32, color: 'white' }} />
-              </Box>
-              <Box>
-                <Typography variant="h4" component="h1" fontWeight={700} sx={{ mb: 0.5 }}>
-                  {isEditing ? 'Editar Departamento' : 'Novo Departamento'}
-                </Typography>
-                <Typography variant="body1" sx={{ opacity: 0.9 }}>
-                  {isEditing 
-                    ? 'Atualize as informações do departamento' 
-                    : 'Preencha os dados para criar um novo departamento'
-                  }
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
+        <PageHeader
+          title={isEditing ? 'Editar Departamento' : 'Novo Departamento'}
+          description={isEditing 
+            ? 'Atualize as informações do departamento' 
+            : 'Preencha os dados para criar um novo departamento'
+          }
+          icon={<Business />}
+        />
 
         <Box sx={{ p: 4 }}>
           {error && (
@@ -261,7 +225,6 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
             </Alert>
           )}
 
-          {/* Alerta informativo sobre fluxo de trabalho */}
           {!isEditing && (
             <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
               <Typography variant="body2">
@@ -272,7 +235,6 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
           )}
 
           <form onSubmit={handleSubmit}>
-            {/* Seção: Informações Básicas */}
             <Box sx={{ mb: 4 }}>
               <Typography 
                 variant="h6" 
@@ -290,7 +252,6 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
               </Typography>
               
               <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
-                {/* Nome do Departamento */}
                 <Box>
                   <TextField
                     fullWidth
@@ -317,7 +278,6 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
                   />  
                 </Box>
   
-                  {/* Gestor Responsável */}
                   <Box>
                   <FormControl fullWidth disabled={loading}>
                     <InputLabel>Gestor Responsável (Opcional)</InputLabel>
@@ -358,7 +318,6 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
                </Box>
             </Box>
 
-            {/* Seção: Descrição */}
             <Box sx={{ mb: 4 }}>
               <Typography 
                 variant="h6" 
@@ -395,7 +354,6 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
               />
             </Box>
 
-            {/* Seção: Adicionar Colaboradores */}
             <Box sx={{ mb: 4 }}>
               <Typography 
                 variant="h6" 
@@ -474,7 +432,6 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
               </Box>
             </Box>
 
-            {/* Seção: Colaboradores Selecionados */}
             <Box sx={{ mb: 4 }}>
               <Typography 
                 variant="h6" 
@@ -577,7 +534,6 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
 
             <Divider sx={{ my: 4 }} />
 
-            {/* Botões de Ação */}
              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
                 <Button
                   variant="outlined"
@@ -609,11 +565,11 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
                     borderRadius: 2,
                     px: 4,
                     py: 1.5,
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+                    background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+                    boxShadow: '0 4px 15px rgba(34, 197, 94, 0.4)',
                     '&:hover': {
-                      background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-                      boxShadow: '0 6px 20px rgba(102, 126, 234, 0.6)',
+                      background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)',
+                      boxShadow: '0 6px 20px rgba(34, 197, 94, 0.6)',
                       transform: 'translateY(-2px)'
                     },
                     '&:disabled': {
