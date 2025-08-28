@@ -145,16 +145,31 @@ export class DepartmentService {
   // Buscar gestores disponíveis (colaboradores com nível gestor)
   static async getAvailableManagers(): Promise<Employee[]> {
     try {
+      // Buscar todos os funcionários ativos
       const q = query(
         collection(db, EMPLOYEES_COLLECTION),
-        where('jobInfo.hierarchyLevel', '==', 'gestor')
+        where('status', '==', 'active')
       );
       const querySnapshot = await getDocs(q);
       
-      return querySnapshot.docs.map(doc => ({
+      const allEmployees = querySnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
+        createdAt: doc.data().createdAt?.toDate(),
+        updatedAt: doc.data().updatedAt?.toDate()
       })) as Employee[];
+
+      // Filtrar apenas gestores no cliente
+      const managers = allEmployees.filter(emp => 
+        emp.jobInfo.hierarchyLevel === 'gestor'
+      );
+
+      // Ordenar por nome
+      managers.sort((a, b) => 
+        a.personalInfo.firstName.localeCompare(b.personalInfo.firstName)
+      );
+
+      return managers;
     } catch (error) {
       console.error('Erro ao buscar gestores:', error);
       throw new Error('Erro ao buscar gestores');
@@ -179,6 +194,30 @@ export class DepartmentService {
     } catch (error) {
       console.error('Erro ao adicionar colaborador ao departamento:', error);
       throw new Error('Erro ao adicionar colaborador ao departamento');
+    }
+  }
+
+  // Atribuir gestor a um departamento
+  static async assignManagerToDepartment(departmentId: string, managerId: string): Promise<void> {
+    try {
+      await this.updateDepartment(departmentId, {
+        managerId: managerId
+      });
+      console.log('Gestor atribuído ao departamento com sucesso');
+    } catch (error) {
+      console.error('Erro ao atribuir gestor ao departamento:', error);
+      throw new Error('Erro ao atribuir gestor ao departamento');
+    }
+  }
+
+  // Buscar departamentos sem gestor (para facilitar a atribuição)
+  static async getDepartmentsWithoutManager(): Promise<Department[]> {
+    try {
+      const departments = await this.getAllDepartments();
+      return departments.filter(dept => !dept.managerId);
+    } catch (error) {
+      console.error('Erro ao buscar departamentos sem gestor:', error);
+      throw new Error('Erro ao buscar departamentos sem gestor');
     }
   }
 

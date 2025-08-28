@@ -86,7 +86,7 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({ onNewEmployee, onEdi
       // Extrair departamentos únicos
       const uniqueDepartments = [...new Set(
         data.map(emp => emp.jobInfo.department).filter(Boolean)
-      )];
+      )] as string[];
       setDepartments(uniqueDepartments);
     } catch (err) {
       setError('Erro ao carregar colaboradores');

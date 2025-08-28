@@ -19,7 +19,7 @@ export interface AddressInfo {
 
 export interface JobInfo {
   position: string;
-  department: string;
+  department?: string; // Departamento agora é opcional
   salary: number;
   startDate: string;
   workSchedule: string;

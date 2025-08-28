@@ -56,6 +56,7 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
     const loadManagers = async () => {
       try {
         const managersData = await EmployeeService.getManagersForSelection();
+        console.log('Gestores carregados:', managersData);
         setManagers(managersData);
       } catch (error) {
         console.error('Erro ao carregar gestores:', error);
@@ -250,10 +251,9 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
                   {...field}
                   fullWidth
                   select
-                  label="Departamento"
-                  required
+                  label="Departamento (Opcional)"
                   error={showError}
-                  helperText={showError ? error?.message : ''}
+                  helperText={showError ? error?.message : 'Pode ser definido posteriormente'}
                   size="medium"
                   InputProps={{
                     startAdornment: (
@@ -264,7 +264,7 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
                   }}
                 >
                   <MenuItem value="">
-                    <em>Selecione</em>
+                    <em>Definir posteriormente</em>
                   </MenuItem>
                   {departments.map((dept) => (
                     <MenuItem key={dept.id} value={dept.name}>

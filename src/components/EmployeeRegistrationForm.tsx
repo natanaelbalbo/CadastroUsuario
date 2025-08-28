@@ -448,6 +448,18 @@ export const EmployeeRegistrationForm: React.FC<EmployeeRegistrationFormProps> =
           </Box>
         )}
 
+        {/* Alerta informativo sobre fluxo de trabalho */}
+        {!employee && (
+          <Box sx={{ px: { xs: 2, sm: 3, md: 4 }, mb: 2 }}>
+            <Alert severity="info" sx={{ borderRadius: 2 }}>
+              <Typography variant="body2">
+                <strong>Dica:</strong> Você pode cadastrar funcionários sem departamento e atribuí-los depois. 
+                Para gestores, você pode criar departamentos sem gestor e atribuí-los posteriormente através da opção "Gerenciar Atribuições".
+              </Typography>
+            </Alert>
+          </Box>
+        )}
+
         <Box sx={{ 
           flex: 1,
           p: { xs: 2, sm: 3, md: 4 }, 

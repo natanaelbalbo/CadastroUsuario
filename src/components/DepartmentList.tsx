@@ -30,10 +30,12 @@ import {
   DeleteSweep,
   Search,
   Business,
-  Person
+  Person,
+  Assignment
 } from '@mui/icons-material';
 import { DepartmentService } from '../services/departmentService';
 import type { Department, DepartmentWithDetails } from '../types/Department';
+import { DepartmentAssignmentForm } from './DepartmentAssignmentForm';
 
 interface DepartmentListProps {
   onNewDepartment: () => void;
@@ -52,6 +54,7 @@ export const DepartmentList: React.FC<DepartmentListProps> = ({
   const [selectedDepartments, setSelectedDepartments] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [massDeleteDialogOpen, setMassDeleteDialogOpen] = useState(false);
+  const [showAssignmentForm, setShowAssignmentForm] = useState(false);
 
   useEffect(() => {
     loadDepartments();
@@ -145,6 +148,17 @@ export const DepartmentList: React.FC<DepartmentListProps> = ({
     );
   }
 
+  if (showAssignmentForm) {
+    return (
+      <DepartmentAssignmentForm 
+        onClose={() => {
+          setShowAssignmentForm(false);
+          loadDepartments(); // Recarregar após possíveis mudanças
+        }} 
+      />
+    );
+  }
+
   return (
     <Box sx={{ p: { xs: 2, md: 3 }, maxWidth: '1400px', mx: 'auto' }}>
       {/* Cabeçalho com melhor hierarquia visual */}
@@ -176,28 +190,53 @@ export const DepartmentList: React.FC<DepartmentListProps> = ({
             Gerencie os departamentos da sua organização
           </Typography>
         </Box>
-        <Button
-          variant="contained"
-          startIcon={<Add />}
-          onClick={onNewDepartment}
-          size="large"
-          sx={{
-            borderRadius: 2,
-            px: 3,
-            py: 1.5,
-            textTransform: 'none',
-            fontSize: '1rem',
-            fontWeight: 600,
-            boxShadow: 2,
-            '&:hover': {
-              boxShadow: 4,
-              transform: 'translateY(-1px)'
-            },
-            transition: 'all 0.2s ease-in-out'
-          }}
-        >
-          Novo Departamento
-        </Button>
+        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            onClick={onNewDepartment}
+            size="large"
+            sx={{
+              borderRadius: 2,
+              px: 3,
+              py: 1.5,
+              textTransform: 'none',
+              fontSize: '1rem',
+              fontWeight: 600,
+              boxShadow: 2,
+              '&:hover': {
+                boxShadow: 4,
+                transform: 'translateY(-1px)'
+              },
+              transition: 'all 0.2s ease-in-out'
+            }}
+          >
+            Novo Departamento
+          </Button>
+          <Button
+            variant="outlined"
+            startIcon={<Assignment />}
+            onClick={() => setShowAssignmentForm(true)}
+            size="large"
+            sx={{
+              borderRadius: 2,
+              px: 3,
+              py: 1.5,
+              textTransform: 'none',
+              fontSize: '1rem',
+              fontWeight: 600,
+              borderColor: 'primary.main',
+              color: 'primary.main',
+              '&:hover': {
+                backgroundColor: 'primary.50',
+                transform: 'translateY(-1px)'
+              },
+              transition: 'all 0.2s ease-in-out'
+            }}
+          >
+            Gerenciar Atribuições
+          </Button>
+        </Box>
       </Box>
 
       {error && (

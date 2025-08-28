@@ -1,7 +1,7 @@
 export interface Department {
   id?: string;
   name: string; // Nome do departamento
-  managerId: string; // ID do gestor responsável (deve ser um colaborador com nível gestor)
+  managerId?: string; // ID do gestor responsável (deve ser um colaborador com nível gestor) - Opcional
   employeeIds: string[]; // IDs dos colaboradores do departamento
   description?: string; // Descrição opcional do departamento
   createdAt?: Date;

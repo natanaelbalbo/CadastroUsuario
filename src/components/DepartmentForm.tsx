@@ -123,10 +123,7 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
       setError('Nome do departamento é obrigatório');
       return false;
     }
-    if (!formData.managerId) {
-      setError('Gestor responsável é obrigatório');
-      return false;
-    }
+    // Gestor não é mais obrigatório na criação - pode ser definido depois
     return true;
   };
 
@@ -264,6 +261,16 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
             </Alert>
           )}
 
+          {/* Alerta informativo sobre fluxo de trabalho */}
+          {!isEditing && (
+            <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
+              <Typography variant="body2">
+                <strong>Dica:</strong> Você pode criar departamentos sem gestor definido e atribuir um gestor posteriormente. 
+                Use a opção "Gerenciar Atribuições" na listagem de departamentos para fazer essas atribuições.
+              </Typography>
+            </Alert>
+          )}
+
           <form onSubmit={handleSubmit}>
             {/* Seção: Informações Básicas */}
             <Box sx={{ mb: 4 }}>
@@ -312,12 +319,12 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
   
                   {/* Gestor Responsável */}
                   <Box>
-                  <FormControl fullWidth required disabled={loading}>
-                    <InputLabel>Gestor Responsável</InputLabel>
+                  <FormControl fullWidth disabled={loading}>
+                    <InputLabel>Gestor Responsável (Opcional)</InputLabel>
                     <Select
                       value={formData.managerId}
                       onChange={(e) => handleInputChange('managerId', e.target.value)}
-                      label="Gestor Responsável"
+                      label="Gestor Responsável (Opcional)"
                       sx={{
                         borderRadius: 2,
                         '&:hover .MuiOutlinedInput-notchedOutline': {
@@ -330,6 +337,9 @@ export const DepartmentForm: React.FC<DepartmentFormProps> = ({
                         </InputAdornment>
                       }
                     >
+                      <MenuItem value="">
+                        <em>Definir posteriormente</em>
+                      </MenuItem>
                       {managers.map((manager) => (
                         <MenuItem key={manager.id} value={manager.id}>
                           <Box sx={{ display: 'flex', flexDirection: 'column' }}>

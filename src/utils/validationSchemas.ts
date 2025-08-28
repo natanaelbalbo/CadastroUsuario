@@ -121,9 +121,8 @@ export const jobInfoSchema = yup.object({
   
   department: yup
     .string()
-    .required('Departamento é obrigatório')
-    .min(2, 'Departamento deve ter pelo menos 2 caracteres')
-    .max(50, 'Departamento deve ter no máximo 50 caracteres'),
+    .optional()
+    .nullable(),
   
   salary: yup
     .number()

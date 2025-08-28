@@ -93,24 +93,41 @@ export class EmployeeService {
   // Buscar gestores disponíveis para seleção
   static async getManagersForSelection(): Promise<Employee[]> {
     try {
-      const q = query(
-        collection(db, COLLECTION_NAME),
-        where('jobInfo.hierarchyLevel', '==', 'gestor'),
-        where('status', '==', 'active'),
-        orderBy('personalInfo.firstName')
-      );
-      const querySnapshot = await getDocs(q);
+      // Buscar todos os funcionários (sem filtro de status primeiro)
+      const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
       
-      const managers: Employee[] = [];
+      const allEmployees: Employee[] = [];
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        managers.push({
+        allEmployees.push({
           id: doc.id,
           ...data,
           createdAt: data.createdAt?.toDate(),
-          updatedAt: data.updatedAt?.toDate()
+          updatedAt: data.updatedAt?.toDate(),
+          status: data.status || 'active' // Fallback para funcionários antigos
         } as Employee);
       });
+
+      // Filtrar apenas gestores ativos no cliente
+      const managers = allEmployees.filter(emp => 
+        emp.jobInfo?.hierarchyLevel === 'gestor' && 
+        (emp.status === 'active' || !emp.status) // Incluir funcionários sem status definido
+      );
+
+      // Ordenar por nome
+      managers.sort((a, b) => 
+        a.personalInfo.firstName.localeCompare(b.personalInfo.firstName)
+      );
+
+      console.log('Total funcionários encontrados:', allEmployees.length);
+      console.log('Gestores encontrados:', managers.length);
+      console.log('Lista de gestores:', managers.map(m => ({
+        id: m.id,
+        nome: `${m.personalInfo.firstName} ${m.personalInfo.lastName}`,
+        nivel: m.jobInfo.hierarchyLevel,
+        status: m.status,
+        email: m.personalInfo.email
+      })));
 
       return managers;
     } catch (error) {
@@ -157,6 +174,54 @@ export class EmployeeService {
     } catch (error) {
       console.error('Erro ao remover colaboradores: ', error);
       throw new Error('Falha ao remover colaboradores');
+    }
+  }
+
+  // Buscar funcionários sem departamento (para facilitar atribuição posterior)
+  static async getEmployeesWithoutDepartment(): Promise<Employee[]> {
+    try {
+      const q = query(
+        collection(db, COLLECTION_NAME),
+        where('status', '==', 'active'),
+        orderBy('personalInfo.firstName')
+      );
+      const querySnapshot = await getDocs(q);
+      
+      const employees: Employee[] = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const employee = {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate(),
+          updatedAt: data.updatedAt?.toDate()
+        } as Employee;
+        
+        // Incluir apenas funcionários sem departamento ou com departamento vazio
+        if (!employee.jobInfo.department || employee.jobInfo.department.trim() === '') {
+          employees.push(employee);
+        }
+      });
+
+      return employees;
+    } catch (error) {
+      console.error('Erro ao buscar funcionários sem departamento: ', error);
+      throw new Error('Falha ao buscar funcionários sem departamento');
+    }
+  }
+
+  // Atribuir departamento a um funcionário
+  static async assignDepartmentToEmployee(employeeId: string, department: string): Promise<void> {
+    try {
+      const employeeRef = doc(db, COLLECTION_NAME, employeeId);
+      await updateDoc(employeeRef, {
+        'jobInfo.department': department,
+        updatedAt: Timestamp.now()
+      });
+      console.log('Departamento atribuído ao funcionário com sucesso');
+    } catch (error) {
+      console.error('Erro ao atribuir departamento ao funcionário: ', error);
+      throw new Error('Falha ao atribuir departamento ao funcionário');
     }
   }
 }
