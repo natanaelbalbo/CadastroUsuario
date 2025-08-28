@@ -1,58 +1,6 @@
 # Sistema de Gestão de Funcionários e Departamentos
 Sistema web completo para gestão de funcionários e departamentos com autenticação, dashboard e relatórios desenvolvido com React, TypeScript e Firebase.
 
-## Problema Cíclico Resolvido
-
-Este sistema resolve um problema clássico de **dependência circular** entre departamentos e gestores:
-
-### O Problema Original
-- Para criar um **Departamento** era necessário ter um **Gestor** (funcionário com nível gestor)  
-- Para criar um **Funcionário Gestor** era necessário ter um **Departamento**  
-- **Resultado**: Era impossível criar o primeiro registro! 
-
-### A Solução Implementada
-
-#### 1. **Campos Tornados Opcionais**
-- **Departamento**: Gestor responsável agora é **opcional** na criação
-- **Funcionário**: Departamento agora é **opcional** na criação  
-- Ambos podem ser definidos posteriormente
-
-#### 2. **Sistema de Gerenciamento de Atribuições**
-- Interface dedicada **"Gerenciar Atribuições"** na lista de departamentos
-- Visualiza departamentos sem gestor e funcionários sem departamento
-- Permite atribuições em lote e individuais
-- Interface intuitiva com feedback visual
-
-#### 3. **Flexibilidade Total no Fluxo**
-Você pode escolher qualquer estratégia:
-
-**Opção A**: Departamento primeiro
-```
-1. Criar departamento (sem gestor)
-2. Cadastrar funcionário gestor (sem departamento) 
-3. Usar "Gerenciar Atribuições" para conectar
-```
-
-**Opção B**: Funcionário primeiro
-```
-1. Cadastrar funcionário gestor (sem departamento)
-2. Criar departamento (atribuir o gestor já existente)
-```
-
-**Opção C**: Em lote  
-```
-1. Criar vários departamentos e funcionários
-2. Fazer todas as atribuições de uma vez
-```
-
-#### 4. **Benefícios da Solução**
-- Remove dependência circular completamente
-- Mantém todas as validações de negócio
-- Interface intuitiva com dicas visuais  
-- Flexibilidade total na ordem de cadastro
-- Compatível com fluxo anterior
-- Código limpo e bem estruturado
-
 ## Tecnologias Utilizadas
 
 - **Frontend:** React 18 + TypeScript + Vite
@@ -87,6 +35,35 @@ Você pode escolher qualquer estratégia:
 - Associação de funcionários aos departamentos
 - Interface dedicada para atribuições em lote
 - Exclusão de departamentos
+
+#### Por que foi criada a tela "Gerenciar Atribuições"?
+
+Durante o desenvolvimento foi identificado um problema técnico de dependência circular onde era impossível criar os primeiros registros do sistema:
+- Para criar um Departamento era necessário ter um Gestor cadastrado
+- Para cadastrar um Funcionário Gestor era necessário ter um Departamento
+
+**Solução Implementada:**
+A tela "Gerenciar Atribuições" resolve este problema permitindo:
+
+1. **Criação Independente**: Departamentos podem ser criados sem gestor e funcionários podem ser cadastrados sem departamento
+2. **Conexão Posterior**: Interface dedicada para conectar gestores aos departamentos e funcionários aos departamentos
+3. **Visibilidade**: Mostra claramente quais departamentos não têm gestor e quais funcionários não têm departamento
+4. **Atribuição em Lote**: Permite atribuir múltiplos funcionários a um departamento de uma vez
+
+**Casos de Uso:**
+- **Cenário A**: Criar departamento "Vendas" sem gestor → Cadastrar João como gestor → Usar "Gerenciar Atribuições" para conectar João ao departamento Vendas
+- **Cenário B**: Cadastrar funcionário Maria sem departamento → Criar departamento "Marketing" → Usar "Gerenciar Atribuições" para atribuir Maria ao Marketing
+- **Cenário C**: Organizar múltiplos funcionários e departamentos criados separadamente
+
+**Funcionalidades da Tela:**
+- Lista departamentos que não possuem gestor responsável
+- Lista funcionários que não estão vinculados a nenhum departamento  
+- Interface para atribuir gestores específicos a departamentos
+- Interface para atribuir funcionários a departamentos (individual ou em lote)
+- Feedback visual do status das atribuições
+- Validações para garantir que apenas funcionários com nível "gestor" podem ser atribuídos como gestores
+
+Esta solução mantém a integridade das regras de negócio enquanto remove a dependência circular, proporcionando flexibilidade na ordem de cadastro dos dados.
 
 ### Dashboard
 - Visão geral do sistema
@@ -243,12 +220,32 @@ src/
 5. Clique em "Salvar Departamento"
 
 #### Gerenciar Atribuições (NOVO)
+
+**Quando usar esta funcionalidade:**
+- Quando você criou departamentos sem gestor definido
+- Quando você cadastrou funcionários sem departamento
+- Quando precisa reorganizar a estrutura organizacional
+- Quando quer atribuir múltiplos funcionários a um departamento rapidamente
+
+**Passo a passo:**
 1. No dashboard, clique em "Listar Departamentos"
 2. Clique no botão **"Gerenciar Atribuições"**
-3. Veja departamentos sem gestor e funcionários sem departamento
-4. **Atribuir Gestor:** Clique em "Atribuir Gestor" e selecione o funcionário
-5. **Atribuir Funcionários:** Selecione um departamento e marque os funcionários
-6. **Resultado:** Sistema conecta gestores e funcionários automaticamente
+3. A tela mostrará dois painéis:
+   - **Esquerda**: Departamentos sem Gestor - lista todos os departamentos que ainda não têm um responsável
+   - **Direita**: Funcionários sem Departamento - lista todos os funcionários que não estão vinculados a nenhum departamento
+
+**Para atribuir um gestor a um departamento:**
+1. No painel esquerdo, clique em "Atribuir Gestor" no departamento desejado
+2. Selecione um funcionário com nível hierárquico "gestor"
+3. A atribuição é feita automaticamente
+
+**Para atribuir funcionários a um departamento:**
+1. No painel direito, clique em "Atribuir a Departamento"
+2. Selecione o departamento de destino
+3. Marque os funcionários que deseja atribuir (pode ser múltiplos)
+4. Clique em "Atribuir" para confirmar
+
+**Resultado:** Os funcionários e gestores ficam organizados nos departamentos, eliminando a necessidade de definir essas relações no momento do cadastro.
 
 #### Listar e gerenciar departamentos
 1. No dashboard, clique em "Listar Departamentos"
@@ -310,6 +307,28 @@ As regras de validação estão em `src/utils/validationSchemas.ts` e podem ser 
 - Use **"Gerenciar Atribuições"** para atribuir um gestor depois
 - Sistema valida se o funcionário tem nível hierárquico "gestor"
 
+### Problemas com Atribuições
+
+**Gestor não aparece na lista de seleção:**
+- Verifique se o funcionário tem nível hierárquico definido como "gestor"
+- Confirme se o funcionário está com status "ativo"
+- Use "Gerenciar Atribuições" para ver todos os gestores disponíveis
+
+**Funcionário não aparece para atribuição:**
+- Funcionários só aparecem se não tiverem departamento definido
+- Verifique se o campo "departamento" está vazio no cadastro do funcionário
+- Funcionários já vinculados a departamentos não aparecem na lista
+
+**Departamento não aceita gestor:**
+- Apenas funcionários com nível hierárquico "gestor" podem ser atribuídos
+- Edite o funcionário e altere o nível hierárquico para "gestor"
+- Departamentos podem ter apenas um gestor por vez
+
+**Erro ao carregar dados na tela de atribuições:**
+- Verifique a conexão com Firebase
+- Console do navegador pode mostrar erros específicos
+- Tente recarregar a página ou fazer logout/login
+
 ### Erro de build
 - Execute `npm install` novamente
 - Verifique se todas as variáveis de ambiente estão definidas
@@ -317,7 +336,7 @@ As regras de validação estão em `src/utils/validationSchemas.ts` e podem ser 
 
 ## Documentação Técnica
 
-### Arquivos Principais da Solução Cíclica
+### Arquivos Principais da Funcionalidade "Gerenciar Atribuições"
 
 #### `src/components/DepartmentAssignmentForm.tsx`
 Interface completa para gerenciar atribuições:
@@ -362,7 +381,7 @@ interface JobInfo {
 
 ### Para Desenvolvedores
 
-#### Fluxo de Dados da Solução
+#### Fluxo de Dados do Sistema
 1. **Criação Flexível**: Campos opcionais permitem criação independente
 2. **Interface de Atribuição**: `DepartmentAssignmentForm` conecta entidades  
 3. **Validação Mantida**: Regras de negócio preservadas

@@ -56,7 +56,6 @@ export const JobInfoStep: React.FC<JobInfoStepProps> = ({ control }) => {
     const loadManagers = async () => {
       try {
         const managersData = await EmployeeService.getManagersForSelection();
-        console.log('Gestores carregados:', managersData);
         setManagers(managersData);
       } catch (error) {
         console.error('Erro ao carregar gestores:', error);

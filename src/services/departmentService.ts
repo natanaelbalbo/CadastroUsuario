@@ -7,7 +7,6 @@ import {
   updateDoc,
   deleteDoc,
   query,
-  where,
   orderBy,
   Timestamp
 } from 'firebase/firestore';
@@ -145,23 +144,21 @@ export class DepartmentService {
   // Buscar gestores disponíveis (colaboradores com nível gestor)
   static async getAvailableManagers(): Promise<Employee[]> {
     try {
-      // Buscar todos os funcionários ativos
-      const q = query(
-        collection(db, EMPLOYEES_COLLECTION),
-        where('status', '==', 'active')
-      );
-      const querySnapshot = await getDocs(q);
+      // Buscar todos os funcionários sem filtros que precisem de índice
+      const querySnapshot = await getDocs(collection(db, EMPLOYEES_COLLECTION));
       
       const allEmployees = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
         createdAt: doc.data().createdAt?.toDate(),
-        updatedAt: doc.data().updatedAt?.toDate()
+        updatedAt: doc.data().updatedAt?.toDate(),
+        status: doc.data().status || 'active' // Fallback
       })) as Employee[];
 
-      // Filtrar apenas gestores no cliente
+      // Filtrar no cliente: apenas gestores ativos
       const managers = allEmployees.filter(emp => 
-        emp.jobInfo.hierarchyLevel === 'gestor'
+        emp.jobInfo?.hierarchyLevel === 'gestor' && 
+        (emp.status === 'active' || !emp.status)
       );
 
       // Ordenar por nome
@@ -213,8 +210,24 @@ export class DepartmentService {
   // Buscar departamentos sem gestor (para facilitar a atribuição)
   static async getDepartmentsWithoutManager(): Promise<Department[]> {
     try {
-      const departments = await this.getAllDepartments();
-      return departments.filter(dept => !dept.managerId);
+      // Buscar todos os departamentos sem filtros complexos
+      const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
+      
+      const allDepartments: Department[] = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        allDepartments.push({
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate(),
+          updatedAt: data.updatedAt?.toDate()
+        } as Department);
+      });
+
+      // Filtrar no cliente: apenas departamentos sem gestor
+      const departmentsWithoutManager = allDepartments.filter(dept => !dept.managerId);
+      
+      return departmentsWithoutManager;
     } catch (error) {
       console.error('Erro ao buscar departamentos sem gestor:', error);
       throw new Error('Erro ao buscar departamentos sem gestor');

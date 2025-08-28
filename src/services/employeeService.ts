@@ -119,16 +119,6 @@ export class EmployeeService {
         a.personalInfo.firstName.localeCompare(b.personalInfo.firstName)
       );
 
-      console.log('Total funcionários encontrados:', allEmployees.length);
-      console.log('Gestores encontrados:', managers.length);
-      console.log('Lista de gestores:', managers.map(m => ({
-        id: m.id,
-        nome: `${m.personalInfo.firstName} ${m.personalInfo.lastName}`,
-        nivel: m.jobInfo.hierarchyLevel,
-        status: m.status,
-        email: m.personalInfo.email
-      })));
-
       return managers;
     } catch (error) {
       console.error('Erro ao buscar gestores: ', error);
@@ -180,12 +170,8 @@ export class EmployeeService {
   // Buscar funcionários sem departamento (para facilitar atribuição posterior)
   static async getEmployeesWithoutDepartment(): Promise<Employee[]> {
     try {
-      const q = query(
-        collection(db, COLLECTION_NAME),
-        where('status', '==', 'active'),
-        orderBy('personalInfo.firstName')
-      );
-      const querySnapshot = await getDocs(q);
+      // Buscar TODOS os funcionários (sem filtros que precisem de índice)
+      const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
       
       const employees: Employee[] = [];
       querySnapshot.forEach((doc) => {
@@ -194,11 +180,15 @@ export class EmployeeService {
           id: doc.id,
           ...data,
           createdAt: data.createdAt?.toDate(),
-          updatedAt: data.updatedAt?.toDate()
+          updatedAt: data.updatedAt?.toDate(),
+          status: data.status || 'active' // Fallback
         } as Employee;
         
-        // Incluir apenas funcionários sem departamento ou com departamento vazio
-        if (!employee.jobInfo.department || employee.jobInfo.department.trim() === '') {
+        // Filtrar no cliente: funcionários ativos E sem departamento
+        const isActive = employee.status === 'active' || !employee.status;
+        const hasNoDepartment = !employee.jobInfo?.department || employee.jobInfo.department.trim() === '';
+        
+        if (isActive && hasNoDepartment) {
           employees.push(employee);
         }
       });
