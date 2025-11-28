@@ -19,7 +19,6 @@ import { DepartmentList } from './DepartmentList';
 import { DepartmentForm } from './DepartmentForm';
 import type { Employee } from '../types/Employee';
 import type { Department } from '../types/Department';
-import flugoLogo from '../assets/icon275.jpg';
 
 type DashboardView = 'employees' | 'employee-form' | 'departments' | 'department-form';
 
@@ -116,12 +115,6 @@ export const Dashboard: React.FC = () => {
       {/* Barra superior */}
       <AppBar position="static" elevation={1}>
         <Toolbar>
-          {/* Logo */}
-          <Avatar
-            src={flugoLogo}
-            sx={{ width: 40, height: 40, mr: 2 }}
-          />
-          
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Sistema de Gestão de Colaboradores
           </Typography>

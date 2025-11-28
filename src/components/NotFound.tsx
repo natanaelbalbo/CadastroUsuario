@@ -1,8 +1,7 @@
 import React from 'react';
 import { Box, Typography, Button, Paper } from '@mui/material';
-import { Home, ArrowBack } from '@mui/icons-material';
+import { Home, ArrowBack, ErrorOutline } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import flugoLogo from '../assets/icon275.jpg';
 
 export const NotFound: React.FC = () => {
   const navigate = useNavigate();
@@ -37,17 +36,11 @@ export const NotFound: React.FC = () => {
           width: '100%'
         }}
       >
-        {/* Logo da empresa */}
-        <Box
-          component="img"
-          src={flugoLogo}
-          alt="Flugo Logo"
+        <ErrorOutline
           sx={{
-            width: 100,
-            height: 100,
-            mx: 'auto',
-            mb: 3,
-            borderRadius: 2
+            fontSize: 120,
+            color: 'primary.main',
+            mb: 3
           }}
         />
         

@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 
-const flugoTheme = createTheme({
+const appTheme = createTheme({
   palette: {
     primary: {
       main: '#22c55e',
@@ -252,4 +252,4 @@ const flugoTheme = createTheme({
   },
 });
 
-export default flugoTheme;
+export default appTheme;

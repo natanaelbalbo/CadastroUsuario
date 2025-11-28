@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
-import flugoTheme from './theme/flugoTheme';
+import appTheme from './theme/appTheme';
 import { AuthProvider } from './contexts/AuthContext';
 import { PrivateRoute } from './components/PrivateRoute';
 import { LoginForm } from './components/LoginForm';
@@ -10,7 +10,7 @@ import { Dashboard } from './components/Dashboard';
 
 function App() {
   return (
-    <ThemeProvider theme={flugoTheme}>
+    <ThemeProvider theme={appTheme}>
       <CssBaseline />
       <AuthProvider>
         <Router>

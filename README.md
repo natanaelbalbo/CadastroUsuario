@@ -1,5 +1,5 @@
 # Sistema de Gestão de Funcionários e Departamentos
-Sistema web completo para gestão de funcionários e departamentos com autenticação, dashboard e relatórios desenvolvido com React, TypeScript e Firebase.
+Sistema web completo para gestão de funcionários e departamentos com autenticação, dashboard e relatórios. Projeto desenvolvido como demonstração de habilidades em React, TypeScript e Firebase para portfólio profissional.
 
 ## Tecnologias Utilizadas
 
@@ -183,7 +183,7 @@ src/
 │   ├── formatters.ts
 │   └── validationSchemas.ts
 ├── theme/              # Tema Material UI
-│   └── flugoTheme.ts
+│   └── appTheme.ts
 ├── App.tsx
 └── main.tsx
 ```
@@ -271,16 +271,16 @@ Os arquivos de produção serão gerados na pasta `dist/`.
 - `npm run preview` - Preview do build de produção
 - `npm run lint` - Executa o linter
 
-## Personalização
+### Personalização
 
 ### Cores do tema
-As cores principais estão definidas em `src/theme/flugoTheme.ts`:
+As cores principais estão definidas em `src/theme/appTheme.ts`:
 
 ```typescript
-const flugoTheme = createTheme({
+const appTheme = createTheme({
   palette: {
     primary: {
-      main: '#22c55e', // Verde da Flugo
+      main: '#22c55e', // Verde principal
     },
     // ...
   }

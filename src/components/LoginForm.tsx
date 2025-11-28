@@ -12,7 +12,6 @@ import {
 import { LockOutlined } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import flugoLogo from '../assets/icon275.jpg';
 
 
 export const LoginForm: React.FC = () => {
@@ -94,12 +93,6 @@ export const LoginForm: React.FC = () => {
           alignItems: 'center'
         }}
       >
-        {/* Logo da empresa */}
-        <Avatar
-          src={flugoLogo}
-          sx={{ width: 80, height: 80, mb: 2 }}
-        />
-        
         <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
           <LockOutlined />
         </Avatar>

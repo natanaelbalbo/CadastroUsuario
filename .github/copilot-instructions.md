@@ -1,10 +1,10 @@
-# Copilot Instructions para Flugo - Cadastro de Funcionários
+# Copilot Instructions - Sistema de Gestão de Funcionários
 
 <!-- Use this file to provide workspace-specific custom instructions to Copilot. For more details, visit https://code.visualstudio.com/docs/copilot/copilot-customization#_use-a-githubcopilotinstructionsmd-file -->
 
 ## Contexto do Projeto
 
-Este é um projeto React com TypeScript para cadastro de funcionários usando formulário multi-step. O design segue o padrão visual da Flugo.
+Este é um projeto React com TypeScript para cadastro de funcionários usando formulário multi-step. Desenvolvido como projeto de portfólio profissional.
 
 ## Tecnologias Principais
 
@@ -49,8 +49,8 @@ src/
 └── theme/              # Tema Material UI
 ```
 
-## Cores da Flugo
+## Cores do Tema
 
-- **Verde Primário**: #22c55e (baseado na screenshot)
+- **Verde Primário**: #22c55e
 - **Cinza**: #6b7280
 - **Fundo**: #f9fafb
