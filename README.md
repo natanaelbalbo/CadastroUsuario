@@ -1,6 +1,13 @@
 # Sistema de Gestão de Funcionários e Departamentos
 Sistema web completo para gestão de funcionários e departamentos com autenticação, dashboard e relatórios. Projeto desenvolvido como demonstração de habilidades em React, TypeScript e Firebase para portfólio profissional.
 
+## Credenciais de Acesso
+
+Para acessar o sistema, utilize as seguintes credenciais:
+
+- **Email:** nfigueredobalbo@gmail.com
+- **Senha:** natan123
+
 ## Tecnologias Utilizadas
 
 - **Frontend:** React 18 + TypeScript + Vite
@@ -142,13 +149,6 @@ npm run dev
 ```
 
 O projeto estará disponível em: `http://localhost:5173`
-
-## Credenciais de Acesso
-
-Para acessar o sistema, utilize as seguintes credenciais:
-
-- **Email:** nfigueredobalbo@gmail.com
-- **Senha:** natan123
 
 ## Estrutura do Projeto
 
