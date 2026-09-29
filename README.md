@@ -5,8 +5,8 @@ Sistema web completo para gestão de funcionários e departamentos com autentica
 
 Para acessar o sistema, utilize as seguintes credenciais:
 
-- **Email:** nfigueredobalbo@gmail.com
-- **Senha:** natan123
+- **Email:** admin@teste.com
+- **Senha:** admin123
 
 ## Tecnologias Utilizadas
 
